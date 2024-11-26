@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'username' => '28196',
             'name' => 'Lee Robin Montenegro',
             'password' => Hash::make('1234'),
+            'role' => 'tutor',
         ]);
 
         Tutor::create([
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'username' => '28197',
             'name' => 'Kenneth Hulab',
             'password' => Hash::make('1234'),
+            'role' => 'tutor',
         ]);
 
         Tutor::create([
@@ -61,21 +63,22 @@ class DatabaseSeeder extends Seeder
             'username' => '28198',
             'name' => 'Albenzar Sagad',
             'password' => Hash::make('1234'),
+            'role' => 'student',
         ]);
 
-        Tutor::create([
-            'tutor_id' => '28198',
-            'tutor_name' => 'Albenzar Sagad'
-        ]);
-
-        Lesson::create([
-            'lesson_tutor' => '28198',
-            'title' => 'Application Development',
-            'description' => 'This is the example description for Application Development',
-            'price' => '2000',
-            'duration' => '60 hours',
-            'topics' => '15 topics'
-        ]);
+//        Tutor::create([
+//            'tutor_id' => '28198',
+//            'tutor_name' => 'Albenzar Sagad'
+//        ]);
+//
+//        Lesson::create([
+//            'lesson_tutor' => '28198',
+//            'title' => 'Application Development',
+//            'description' => 'This is the example description for Application Development',
+//            'price' => '2000',
+//            'duration' => '60 hours',
+//            'topics' => '15 topics'
+//        ]);
 
 
     }

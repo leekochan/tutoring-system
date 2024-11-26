@@ -11,13 +11,21 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $tutor = auth()->user();
-
     return view('dashboard', [
-        'lessons' => $tutor ? Lesson::where('lesson_tutor', $tutor->username)->latest()->get() : collect([])
+        'lessons' => Lesson::where('lesson_tutor', $tutor->username)->latest()->get()
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'role:tutor'])->name('dashboard');
+
+// Student Dashboard
+Route::get('student/dashboard', function () {
+    $lessons = Lesson::all();
+
+    return view('student-dashboard', ['lessons' => $lessons]);
+})->middleware(['auth', 'role:student'])->name('student/dashboard');
+
 
 Route::view('/schedule', 'schedule')->name('schedule');
+Route::view('/student-schedule', 'student-schedule')->name('student-schedule');
 
 Route::view('/lesson/create', 'create-lesson');
 Route::post('/lesson/create', [LessonController::class, 'lessonCreate']);
