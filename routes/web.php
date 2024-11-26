@@ -17,6 +17,15 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('admin/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'role:admin']);
+
+Route::get('student/dashboard', function () {
+    return view('student-dashboard');
+})->middleware(['auth', 'role:student'])->name('student/admin');
+
+
 Route::view('/schedule', 'schedule')->name('schedule');
 
 Route::view('/lesson/create', 'create-lesson');

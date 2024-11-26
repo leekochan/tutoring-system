@@ -39,6 +39,12 @@ class User extends Authenticatable
         return $this->hasMany(Tutor::class , 'tutor_id', 'username');
     }
 
+    // In User model
+//    public function hasRole($role)
+//    {
+//        return $this->role === $role;
+//    }
+
 
     /**
      * Get the attributes that should be cast.

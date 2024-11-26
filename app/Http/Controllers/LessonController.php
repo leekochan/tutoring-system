@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lesson;
-use App\Models\Tutor;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
