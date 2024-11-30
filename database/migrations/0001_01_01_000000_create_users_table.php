@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->primary();
             $table->string('password');
-            $table->string('role', ['tutor', 'student']);
+            $table->string('role', ['tutor', 'student'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -37,21 +37,33 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Determine role based on username
+        $role = str_contains($request->username, '@admin') ? 'tutor' : 'student';
+
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'password' => Hash::make($request->password),
+            'role' => $role, // Add role assignment
         ]);
 
-        Tutor::create([
-            'tutor_name' => $request->name,
-            'tutor_id' => $request->username,
-        ]);
+        // Create tutor record only if the role is tutor
+        if ($role === 'tutor') {
+            Tutor::create([
+                'tutor_name' => $request->name,
+                'tutor_id' => $request->username,
+            ]);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role
+        return redirect(
+            $role === 'tutor'
+                ? route('dashboard', absolute: false)
+                : route('student/dashboard', absolute: false)
+        );
     }
 }
