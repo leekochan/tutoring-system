@@ -24,6 +24,15 @@ Route::get('student/dashboard', function () {
 })->middleware(['auth', 'role:student'])->name('student/dashboard');
 
 
+Route::get('admin/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'role:admin']);
+
+Route::get('student/dashboard', function () {
+    return view('student-dashboard');
+})->middleware(['auth', 'role:student'])->name('student/admin');
+
+
 Route::view('/schedule', 'schedule')->name('schedule');
 Route::view('/student-schedule', 'student-schedule')->name('student-schedule');
 
