@@ -3,7 +3,7 @@
         type="text"
         placeholder="Search..."
         id="searchInput"
-        class="w-64 px-4 py-2 text-sm text-gray-900 bg-white rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        class="w-64 px-4 py-2 text-lg text-gray-900 bg-white rounded-md border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
         aria-label="Search"
         autocomplete="off"
     >

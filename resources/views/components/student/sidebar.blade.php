@@ -11,7 +11,7 @@
             <i class="fas fa-search mr-2"></i>
             <span>Browse Lesson</span>
         </a>
-        <a href="student/schedule" class="flex items-center px-4 py-2 text-sm text-black rounded-md hover:bg-green-600 active:bg-gray-200 [&.active]:bg-green-600 [&.active]:text-white">
+        <a href="/student/schedule" class="flex items-center px-4 py-2 text-sm text-black rounded-md hover:bg-green-600 active:bg-gray-200 [&.active]:bg-green-600 [&.active]:text-white">
             <i class="fas fa-calendar-plus mr-2"></i>
             <span>Schedule a Session</span>
         </a>

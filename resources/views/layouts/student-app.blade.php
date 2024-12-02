@@ -10,7 +10,7 @@
 <!-- Main Content Area -->
 <main id="main-content" class="content-transition pt-16 ml-0 border-l border-gray-300">
     <div class="py-6 px-4 sm:px-6 lg:px-8">
-        @yield('content')
+        {{ $slot }}
     </div>
 </main>
 

@@ -1,91 +1,65 @@
-@extends('layouts.student-app')
+<x-layouts.student-app>
 
-@section('content')
     <div x-data="{ sidebarOpen: false }" class="flex">
         <div class="relative z-20 flex items-center justify-center min-h-screen w-full">
-            @auth
                 {{-- Dashboard Content for Logged-In Users --}}
-                <div class="w-full max-w-7xl p-6 space-y-8">
-                    {{-- Welcome Section --}}
-                    <header>
-                        <h1 class="text-3xl font-bold">Welcome, {{ auth()->user()->name }}!</h1>
-                        <p class="text-gray-600">Browse available topics you need.</p>
-                    </header>
+            <div class="w-full max-w-7xl p-6 space-y-8">
+                {{-- Welcome Section --}}
+                <header>
+                    <h1 class="text-3xl font-bold">Welcome, {{ auth()->user()->name }}!</h1>
+                    <p class="text-gray-600">Browse available topics you need.</p>
+                </header>
 
-                    {{-- Tutoring Sessions Section --}
-
-                    {{-- Book New Session Button (inside form) --}}
-
-
-                    {{-- Recommended Tutors Section --}}
-                    <div class="bg-white shadow rounded-lg p-6">
-                        <h2 class="font-bold text-lg mb-4">Recommended Tutors</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="bg-gray-100 p-4 rounded-lg">
-                                <h3 class="font-bold">Stephen Jake Apostol</h3>
-                                <p>Programming Expert</p>
-                                <p class="text-gray-500">Available: 2-4 PM</p>
-                            </div>
-                            <div class="bg-gray-100 p-4 rounded-lg">
-                                <h3 class="font-bold">Ralph Vincent Rodriguez</h3>
-                                <p>Software Engineering Expert</p>
-                                <p class="text-gray-500">Available: 3-5 PM</p>
-                            </div>
-                            <div class="bg-gray-100 p-4 rounded-lg">
-                                <h3 class="font-bold">Archie Lacurom</h3>
-                                <p>MagLu2 Expert</p>
-                                <p class="text-gray-500">Available: 1-3 PM</p>
-                            </div>
+                {{-- Recommended Tutors Section --}}
+                <div class="bg-white shadow rounded-lg p-6">
+                    <h2 class="font-bold text-lg mb-4">Recommended Tutors</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="font-bold">Stephen Jake Apostol</h3>
+                            <p>Programming Expert</p>
+                            <p class="text-gray-500">Available: 2-4 PM</p>
                         </div>
-                        <div class="mt-4 text-center">
-                            <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-full">
-                                <a href="/topics">Find More</a>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="font-bold">Ralph Vincent Rodriguez</h3>
+                            <p>Software Engineering Expert</p>
+                            <p class="text-gray-500">Available: 3-5 PM</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="font-bold">Archie Lacurom</h3>
+                            <p>MagLu2 Expert</p>
+                            <p class="text-gray-500">Available: 1-3 PM</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-full">
+                            <a href="/topics">Find More</a>
+                        </button>
+                    </div>
+                </div>
+                    {{-- Billing/Balance Section --}}
+                <div class="bg-white shadow rounded-lg p-6">
+                    <h2 class="font-bold text-lg mb-4">Billings/Balance</h2>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-green-600">₱1,200</p>
+                        <p class="text-gray-500">Outstanding Balance</p>
+                        <div class="mt-4">
+                            <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded">
+                                View Details
                             </button>
                         </div>
                     </div>
-
-                    {{-- Billing/Balance Section --}}
-                    <div class="bg-white shadow rounded-lg p-6">
-                        <h2 class="font-bold text-lg mb-4">Billings/Balance</h2>
-                        <div class="text-center">
-                            <p class="text-2xl font-bold text-green-600">₱1,200</p>
-                            <p class="text-gray-500">Outstanding Balance</p>
-                            <div class="mt-4">
-                                <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded">
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Other Features Section --}}
-                    <div class="bg-white shadow rounded-lg p-6">
-                        <h2 class="font-bold text-lg mb-4">Other Features</h2>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>
-                            <li><a href="#" class="text-blue-600 hover:underline">Track Your Progress</a></li>
-                            <li><a href="#" class="text-blue-600 hover:underline">Support Center</a></li>
-                        </ul>
-                    </div>
                 </div>
-            @else
-                @guest
-                    {{-- Guest Modal --}}
-                    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="guest-modal">
-                        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 text-center">
-                            <h2 class="text-2xl font-bold text-green-600 mb-4">Welcome to TutorLink</h2>
-                            <p class="text-gray-700 mb-6">
-                                Unlock your potential! Log in or register to access peer tutoring, track your academic progress, and connect with experienced tutors.
-                            </p>
-                            <div class="flex flex-col gap-4">
-                                <a href="{{ route('login') }}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Log In</a>
-                                <a href="{{ route('register') }}" class="bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white py-2 px-4 rounded">Register</a>
-                            </div>
-                            <p class="mt-4 text-sm text-gray-500">Join us and take the first step toward academic excellence.</p>
-                        </div>
-                    </div>
-                @endguest
-            @endauth
+                    {{-- Other Features Section --}}
+                <div class="bg-white shadow rounded-lg p-6">
+                    <h2 class="font-bold text-lg mb-4">Other Features</h2>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Track Your Progress</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Support Center</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-@endsection
+
+</x-layouts.student-app>

@@ -21,6 +21,6 @@ class StudentApp extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.student.-student-app');
+        return view('layouts.student-app');
     }
 }

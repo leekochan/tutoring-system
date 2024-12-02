@@ -9,12 +9,16 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+// Tutor Dashboard
 Route::get('/dashboard', function () {
     $tutor = auth()->user();
     return view('dashboard', [
         'lessons' => Lesson::where('lesson_tutor', $tutor->username)->latest()->get()
     ]);
 })->middleware(['auth', 'role:tutor'])->name('dashboard');
+
+
+
 
 // Student Dashboard
 Route::get('student/dashboard', function () {
@@ -23,16 +27,21 @@ Route::get('student/dashboard', function () {
     return view('student-dashboard', ['lessons' => $lessons]);
 })->middleware(['auth', 'role:student'])->name('student/dashboard');
 
+Route::get('/topics', function () {
+    $lessons = Lesson::all();
+
+    return view('student-topics', ['lessons' => $lessons]);
+});
+
 Route::get('lesson/{id}/book', function ($id) {
     $lesson = Lesson::find($id);
 
     return view('booking', ['lesson' => $lesson]);
 });
 
-Route::get('/topics', function () {
-    $lessons = Lesson::all();
+Route::get('student/schedule' , function () {
 
-    return view('student-topics', ['lessons' => $lessons]);
+    return view('student-schedule');
 });
 
 Route::view('/schedule', 'schedule')->name('schedule');

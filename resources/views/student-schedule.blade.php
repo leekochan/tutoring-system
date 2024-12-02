@@ -1,12 +1,4 @@
-<x-student.student-app>
-
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4 px-4">
-                {{ __('My Schedules') }}
-            </h2>
-        </div>
-    </x-slot>
+<x-layouts.student-app>
 
     <div class="py-12 sm:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -14,4 +6,4 @@
         </div>
     </div>
 
-</x-student.student-app>
+</x-layouts.student-app>

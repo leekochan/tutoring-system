@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 
@@ -18,11 +19,16 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+//    public function boot(): void
+//    {
+//        if (DB::connection()->getDriverName() === 'sqlite') {
+//            DB::statement('PRAGMA foreign_keys = ON');
+//        }
+//    }
+
+    public function boot()
     {
-        if (DB::connection()->getDriverName() === 'sqlite') {
-            DB::statement('PRAGMA foreign_keys = ON');
-        }
+        Blade::component('layouts.student-app', \App\View\Components\StudentLayout::class);
     }
 
 }
