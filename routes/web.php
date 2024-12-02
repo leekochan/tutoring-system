@@ -23,6 +23,12 @@ Route::get('student/dashboard', function () {
     return view('student-dashboard', ['lessons' => $lessons]);
 })->middleware(['auth', 'role:student'])->name('student/dashboard');
 
+Route::get('lesson/{id}/book', function ($id) {
+    $lesson = Lesson::find($id);
+
+    return view('booking', ['lesson' => $lesson]);
+});
+
 Route::view('/schedule', 'schedule')->name('schedule');
 Route::view('/student-schedule', 'student-schedule')->name('student-schedule');
 

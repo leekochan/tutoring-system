@@ -1,10 +1,11 @@
 <x-student.student-app>
 
     <x-slot name="header">
-        <div class="flex items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4 px-4">
                 {{ __('Browse available lessons') }}
             </h2>
+            <input type="text" placeholder="Search..." class="px-4 py-2 border rounded-md w-3/4">
         </div>
     </x-slot>
     <!-- Main Content (Grid Layout) remains the same -->
@@ -26,10 +27,10 @@
                             <h3 class="text-2xl font-semibold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
                                 {{ $lesson->title }}
                             </h3>
-                            <p class="text-base text-gray-600 flex-grow">
+                            <p class="text-base text-gray-600 flex-grow mt-2">
                                 Tutor: <span class="font-semibold text-black">{{ $lesson->tutor->name }}</span>
                             </p>
-                            <p class="text-base text-gray-600 flex-grow">
+                            <p class="text-base text-gray-600 flex-grow mt-2">
                                 Price: <span class="font-semibold text-black">{{ $lesson->price }}</span>
                             </p>
                             <a href="/lesson/{{ $lesson->id }}/book" class="inline-flex items-center justify-center px-4 py-2 mt-4 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer" style="width: auto">

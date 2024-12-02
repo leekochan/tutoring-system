@@ -1,14 +1,15 @@
 <x-app-layout>
+
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4 px-4">
                 {{ __('Create Lessons') }}
             </h2>
         </div>
     </x-slot>
 
     <div class="py-12 sm:py-16">
-        <div class="mx-auto max-w-2xl p-6 lg:px-8 shadow-lg rounded-lg">
+        <div class="mx-auto max-w-2xl p-6 lg:px-8 shadow-lg rounded-lg bg-white">
             <form method="POST" action="/lesson/create">
                 @csrf
 
