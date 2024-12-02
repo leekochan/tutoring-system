@@ -29,6 +29,12 @@ Route::get('lesson/{id}/book', function ($id) {
     return view('booking', ['lesson' => $lesson]);
 });
 
+Route::get('/topics', function () {
+    $lessons = Lesson::all();
+
+    return view('student-topics', ['lessons' => $lessons]);
+});
+
 Route::view('/schedule', 'schedule')->name('schedule');
 Route::view('/student-schedule', 'student-schedule')->name('student-schedule');
 

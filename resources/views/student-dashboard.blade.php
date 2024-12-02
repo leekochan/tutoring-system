@@ -1,46 +1,91 @@
-<x-student.student-app>
+@extends('layouts.student-app')
 
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4 px-4">
-                {{ __('Browse available lessons') }}
-            </h2>
-            <input type="text" placeholder="Search..." class="px-4 py-2 border rounded-md w-3/4">
-        </div>
-    </x-slot>
-    <!-- Main Content (Grid Layout) remains the same -->
-    <div class="py-12 sm:py-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mt-12 grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($lessons as $lesson)
-                    <div class="block p-4 h-full">
-                        <div @click="openModal({
-                                id: {{ $lesson->id }},
-                                tutor: {{ $lesson->lesson_tutor }},
-                                title: '{{ $lesson->title }}',
-                                description: '{{ $lesson->description }}',
-                                price: '{{ $lesson->price }}',
-                                duration: '{{ $lesson->duration }}',
-                                topics_count: '{{ $lesson->topics_count }}'
-                            })"
-                             class="flex flex-col bg-white rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
-                            <h3 class="text-2xl font-semibold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
-                                {{ $lesson->title }}
-                            </h3>
-                            <p class="text-base text-gray-600 flex-grow mt-2">
-                                Tutor: <span class="font-semibold text-black">{{ $lesson->tutor->name }}</span>
-                            </p>
-                            <p class="text-base text-gray-600 flex-grow mt-2">
-                                Price: <span class="font-semibold text-black">{{ $lesson->price }}</span>
-                            </p>
-                            <a href="/lesson/{{ $lesson->id }}/book" class="inline-flex items-center justify-center px-4 py-2 mt-4 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer" style="width: auto">
-                                Book Now
-                            </a>
+@section('content')
+    <div x-data="{ sidebarOpen: false }" class="flex">
+        <div class="relative z-20 flex items-center justify-center min-h-screen w-full">
+            @auth
+                {{-- Dashboard Content for Logged-In Users --}}
+                <div class="w-full max-w-7xl p-6 space-y-8">
+                    {{-- Welcome Section --}}
+                    <header>
+                        <h1 class="text-3xl font-bold">Welcome, {{ auth()->user()->name }}!</h1>
+                        <p class="text-gray-600">Browse available topics you need.</p>
+                    </header>
+
+                    {{-- Tutoring Sessions Section --}
+
+                    {{-- Book New Session Button (inside form) --}}
+
+
+                    {{-- Recommended Tutors Section --}}
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <h2 class="font-bold text-lg mb-4">Recommended Tutors</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <h3 class="font-bold">Stephen Jake Apostol</h3>
+                                <p>Programming Expert</p>
+                                <p class="text-gray-500">Available: 2-4 PM</p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <h3 class="font-bold">Ralph Vincent Rodriguez</h3>
+                                <p>Software Engineering Expert</p>
+                                <p class="text-gray-500">Available: 3-5 PM</p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <h3 class="font-bold">Archie Lacurom</h3>
+                                <p>MagLu2 Expert</p>
+                                <p class="text-gray-500">Available: 1-3 PM</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-full">
+                                <a href="/topics">Find More</a>
+                            </button>
                         </div>
                     </div>
-                @endforeach
-            </div>
+
+                    {{-- Billing/Balance Section --}}
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <h2 class="font-bold text-lg mb-4">Billings/Balance</h2>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-green-600">₱1,200</p>
+                            <p class="text-gray-500">Outstanding Balance</p>
+                            <div class="mt-4">
+                                <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Other Features Section --}}
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <h2 class="font-bold text-lg mb-4">Other Features</h2>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>
+                            <li><a href="#" class="text-blue-600 hover:underline">Track Your Progress</a></li>
+                            <li><a href="#" class="text-blue-600 hover:underline">Support Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+            @else
+                @guest
+                    {{-- Guest Modal --}}
+                    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="guest-modal">
+                        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 text-center">
+                            <h2 class="text-2xl font-bold text-green-600 mb-4">Welcome to TutorLink</h2>
+                            <p class="text-gray-700 mb-6">
+                                Unlock your potential! Log in or register to access peer tutoring, track your academic progress, and connect with experienced tutors.
+                            </p>
+                            <div class="flex flex-col gap-4">
+                                <a href="{{ route('login') }}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Log In</a>
+                                <a href="{{ route('register') }}" class="bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white py-2 px-4 rounded">Register</a>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-500">Join us and take the first step toward academic excellence.</p>
+                        </div>
+                    </div>
+                @endguest
+            @endauth
         </div>
     </div>
-
-</x-student.student-app>
+@endsection
