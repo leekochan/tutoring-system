@@ -22,7 +22,7 @@ Route::get('/dashboard', function () {
 
 // Student Dashboard
 Route::get('student/dashboard', function () {
-    $lessons = Lesson::all();
+    $lessons = Lesson::take(3)->get();
 
     return view('student-dashboard', ['lessons' => $lessons]);
 })->middleware(['auth', 'role:student'])->name('student/dashboard');

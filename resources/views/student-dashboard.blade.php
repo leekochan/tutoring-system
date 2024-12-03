@@ -1,52 +1,31 @@
 <x-layouts.student-app>
 
     <div x-data="{ sidebarOpen: false }" class="flex">
-        <div class="relative z-20 flex items-center justify-center min-h-screen w-full">
+        <div class="relative z-20 flex items-start justify-center min-h-screen w-full">
                 {{-- Dashboard Content for Logged-In Users --}}
             <div class="w-full max-w-7xl p-6 space-y-8">
                 {{-- Welcome Section --}}
-                <header>
+                <header class="mt-2">
                     <h1 class="text-3xl font-bold">Welcome, {{ auth()->user()->name }}!</h1>
-                    <p class="text-gray-600">Browse available topics you need.</p>
+                    <p class="text-gray-600">Here's an overview of your tutoring activities.</p>
                 </header>
 
                 {{-- Recommended Tutors Section --}}
-                <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="font-bold text-lg mb-4">Recommended Tutors</h2>
+                <div class="bg-white shadow rounded-lg p-10">
+                    <h2 class="font-bold text-2xl mb-4">New topics available!!</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="font-bold">Stephen Jake Apostol</h3>
-                            <p>Programming Expert</p>
-                            <p class="text-gray-500">Available: 2-4 PM</p>
-                        </div>
-                        <div class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="font-bold">Ralph Vincent Rodriguez</h3>
-                            <p>Software Engineering Expert</p>
-                            <p class="text-gray-500">Available: 3-5 PM</p>
-                        </div>
-                        <div class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="font-bold">Archie Lacurom</h3>
-                            <p>MagLu2 Expert</p>
-                            <p class="text-gray-500">Available: 1-3 PM</p>
-                        </div>
+                        @foreach($lessons as $lesson)
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <h3 class="text-lg font-bold pb-2">{{ $lesson->title }}</h3>
+                                <p>Tutor: <span class="font-semibold pb-2">{{ $lesson->tutor->name }}</span></p>
+                                <p>Price: <span class="font-semibold">{{ $lesson->price }}</span></p>
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="mt-4 text-center">
-                        <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-full">
-                            <a href="/topics">Find More</a>
+                    <div class="mt-6">
+                        <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-1/8">
+                            <a href="/topics">Find more topics here!</a>
                         </button>
-                    </div>
-                </div>
-                    {{-- Billing/Balance Section --}}
-                <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="font-bold text-lg mb-4">Billings/Balance</h2>
-                    <div class="text-center">
-                        <p class="text-2xl font-bold text-green-600">₱1,200</p>
-                        <p class="text-gray-500">Outstanding Balance</p>
-                        <div class="mt-4">
-                            <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded">
-                                View Details
-                            </button>
-                        </div>
                     </div>
                 </div>
                     {{-- Other Features Section --}}

@@ -1,4 +1,4 @@
-<div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-white sidebar-transition z-30 border-r border-gray-300 min-h-screen">
+<div id="sidebar" class="sidebar fixed inset-y-0 right-0 bg-white sidebar-transition z-30 border-l border-gray-300 min-h-screen">
     <div class="px-6 pt-4 pb-10">
         <h1 class="text-lg font-bold text-green-700 uppercase font-serif">TUTORLINK</h1>
     </div>
