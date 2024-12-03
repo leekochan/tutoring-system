@@ -39,6 +39,16 @@ class User extends Authenticatable
         return $this->hasMany(Tutor::class , 'tutor_id', 'username');
     }
 
+    public function session()
+    {
+        return $this->hasMany(Schedule::class , 'student_id', 'username');
+    }
+
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class , 'tutor_id', 'username');
+    }
+
     // In User model
 //    public function hasRole($role)
 //    {

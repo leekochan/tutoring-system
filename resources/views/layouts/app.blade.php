@@ -61,24 +61,24 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-<div class="min-h-screen bg-gray-100">
-    <div class="fixed-navigation">
-        @include('layouts.navigation')
-    </div>
-
-    <!-- Page Heading -->
-    @isset($header)
-        <div class="fixed-header bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
+    <div class="min-h-screen bg-gray-100">
+        <div class="fixed-navigation">
+            @include('layouts.navigation')
         </div>
-    @endisset
 
-    <!-- Page Content -->
-    <main class="content-wrapper">
-        {{ $slot }}
-    </main>
-</div>
+        <!-- Page Heading -->
+        @isset($header)
+            <div class="fixed-header bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </div>
+        @endisset
+
+        <!-- Page Content -->
+        <main class="content-wrapper">
+            {{ $slot }}
+        </main>
+    </div>
 </body>
 </html>

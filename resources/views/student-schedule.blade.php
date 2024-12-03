@@ -1,9 +1,13 @@
 <x-layouts.student-app>
 
-    <div class="py-12 sm:py-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <h1>Coming Soon!!!</h1>
+    @foreach($schedules as $schedule)
+    <div class="relative z-20 flex items-start justify-center min-h-screen w-full">
+        {{-- Dashboard Content for Logged-In Users --}}
+        <div class="w-full max-w-7xl p-6 space-y-8">
+            {{ $schedule->booking_date }}
         </div>
     </div>
+    @endforeach
+
 
 </x-layouts.student-app>

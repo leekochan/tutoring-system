@@ -12,7 +12,7 @@
 
                 {{-- Recommended Tutors Section --}}
                 <div class="bg-white shadow rounded-lg p-10">
-                    <h2 class="font-bold text-2xl mb-4">New topics available!!</h2>
+                    <h2 class="font-bold text-lg mb-4">New topics available!!</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($lessons as $lesson)
                             <div class="bg-gray-100 p-4 rounded-lg">

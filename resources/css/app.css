@@ -2,45 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.fixed-navigation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-.fixed-header {
-    position: fixed;
-    top: 64px; /* Adjust based on your navigation bar height */
-    left: 0;
-    width: 100%;
-    z-index: 999;
-}
-.content-wrapper {
-    padding-top: 130px; /* Adjust to account for fixed nav and header */
-}
-html {
-    overflow-y: scroll;
-    scrollbar-gutter: stable both-edges;
-    margin: 0;
-    padding: 0;
-}
+ .sidebar-hidden {
+     display: none;
+ }
 
-body {
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    overscroll-behavior-x: none;
-}
-
-.min-h-screen {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex-grow: 1;
-    width: 100%;
-}
