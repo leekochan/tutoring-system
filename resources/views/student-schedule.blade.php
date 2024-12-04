@@ -1,6 +1,7 @@
 <x-layouts.student-app>
-    <div class="py-12 sm:py-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="relative z-20 flex items-start justify-center min-h-screen w-full">
+        {{-- Dashboard Content for Logged-In Users --}}
+        <div class="w-full max-w-7xl p-6 space-y-8">
             <!-- Upcoming Sessions Section -->
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Upcoming Sessions</h2>
