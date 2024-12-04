@@ -27,9 +27,11 @@ Route::get('/dashboard', function () {
 
 // Student Dashboard
 Route::get('student/dashboard', function () {
+    $student = auth()->user();
     $lessons = Lesson::take(3)->latest()->get();
 
-    return view('student-dashboard', ['lessons' => $lessons]);
+    return view('student-dashboard', ['lessons' => $lessons,
+        'schedules' => Schedule::where('student_id', $student->username)->take(3)->latest()->get()]);
 })->middleware(['auth', 'role:student'])->name('student/dashboard');
 
 Route::get('/topics', function () {
@@ -46,7 +48,6 @@ Route::get('lesson/{id}/book', function ($id) {
 
 Route::get('student/schedule' , function () {
     $student = auth()->user();
-
     return view('student-schedule', [
         'schedules' => Schedule::where('student_id', $student->username)->latest()->get()
     ]);

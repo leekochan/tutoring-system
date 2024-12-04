@@ -10,26 +10,65 @@
                     <p class="text-gray-600">Here's an overview of your tutoring activities.</p>
                 </header>
 
-                {{-- Recommended Tutors Section --}}
-                <div class="bg-white shadow rounded-lg p-10">
-                    <h2 class="font-bold text-lg mb-4">New topics available!!</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @foreach($lessons as $lesson)
-                            <div class="bg-gray-100 p-4 rounded-lg">
-                                <h3 class="text-lg font-bold pb-2">{{ $lesson->title }}</h3>
-                                <p>Tutor: <span class="font-semibold pb-2">{{ $lesson->tutor->name }}</span></p>
-                                <p>Price: <span class="font-semibold">{{ $lesson->price }}</span></p>
+                <div class="bg-white shadow-lg rounded-lg p-10">
+                    <h1 class="font-bold text-2xl mb-2 ml-4">Your upcoming tutoring session.</h1>
+                    <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($schedules->sortBy(['booking_date', 'booking_time']) as $schedule)
+                            <div class="block p-4 h-full">
+                                <div class="flex flex-col bg-orange-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                    <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $schedule->lesson->title }}" style="font-size: larger">
+                                        {{ $schedule->lesson->title }}
+                                    </h1>
+                                    <p class="text-base text-gray-600 flex-grow mt-2">
+                                        Tutor: <span class="font-semibold text-black">{{ $schedule->tutor->name }}</span>
+                                    </p>
+                                    <div class="flex flex-row justify-center">
+                                        <p class="text-base text-gray-600 flex-grow mt-2">
+                                            Date: <span class="font-semibold text-black">{{ $schedule->booking_date }}</span>
+                                        </p>
+                                        <p class="text-base text-gray-600 flex-grow mt-2">
+                                            Time: <span class="font-semibold text-black">{{ $schedule->booking_time }}</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     </div>
-                    <div class="mt-6">
-                        <button class="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded w-1/8">
-                            <a href="/topics">Find more topics here!</a>
+                    <div class="mt-6 text-right">
+                        <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
+                            <a href="/student/schedule">My Schedule >></a>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Recommended Tutors Section --}}
+                <div class="bg-white shadow-lg rounded-lg p-10">
+                    <h2 class="font-bold text-2xl mb-2 ml-4">New topics available!!</h2>
+                    <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($lessons as $lesson)
+                            <div class="block p-4 h-full">
+                                <div class="flex flex-col bg-blue-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                    <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
+                                        {{ $lesson->title }}
+                                    </h1>
+                                    <p class="text-base text-gray-600 flex-grow mt-2">
+                                        Tutor: <span class="font-semibold text-black">{{ $lesson->tutor->name }}</span>
+                                    </p>
+                                    <p class="text-base text-gray-600 flex-grow mt-2">
+                                        Date: <span class="font-semibold text-black">{{ $lesson->price }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="mt-6 text-right">
+                        <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
+                            <a href="/topics">Find more >></a>
                         </button>
                     </div>
                 </div>
                     {{-- Other Features Section --}}
-                <div class="bg-white shadow rounded-lg p-6">
+                <div class="bg-white shadow-lg rounded-lg p-6">
                     <h2 class="font-bold text-lg mb-4">Other Features</h2>
                     <ul class="list-disc list-inside space-y-2">
                         <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>
