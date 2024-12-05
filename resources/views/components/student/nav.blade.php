@@ -24,12 +24,12 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('/topics')" :active="request()->routeIs('/topics')">
-                        {{ __('Topics') }}
+                        {{ __('Available Lessons') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('student/schedule')" :active="request()->routeIs('student/schedule')">
-                        {{ __('My schedule') }}
+                        {{ __('Schedule and Session') }}
                     </x-nav-link>
                 </div>
             </div>

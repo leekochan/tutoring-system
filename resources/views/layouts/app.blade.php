@@ -76,7 +76,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="content-wrapper">
+        <main class="content-wrapper relative">
             {{ $slot }}
         </main>
     </div>

@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
             'title' => 'Programming in the Modern World',
             'description' => 'This is the example description for Software Engineering',
             'price' => '1000',
-            'duration' => '25 hours',
-            'topics' => '6 topics'
+            'duration' => '6',
+            'topics' => '4'
         ]);
 
         User::factory()->create([
@@ -55,8 +55,8 @@ class DatabaseSeeder extends Seeder
             'title' => 'Software Engineering',
             'description' => 'This is the example description for Software Engineering',
             'price' => '2000',
-            'duration' => '10 hours',
-            'topics' => '3 topics'
+            'duration' => '8',
+            'topics' => '3'
         ]);
 
         User::factory()->create([

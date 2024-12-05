@@ -43,10 +43,10 @@
                         </label>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-8" style="margin-top: 15px">
+                    <div class="flex flex-row items-center justify-center gap-4" style="margin-top: 15px">
                         <label class="block">
                             <span class="text-lg font-medium text-gray-700">Price</span>
-                            <div class="mt-2 relative flex items-center-center">
+                            <div class="mt-2 relative">
                                 <input type="text"
                                        name="price"
                                        id="price"
@@ -67,17 +67,19 @@
                                        class="w-full rounded-md border-0 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                         </label>
-                    </div>
 
-                    <label class="block" style="margin-top: 15px">
-                        <span class="text-lg font-medium text-gray-700">Number of Topics</span>
-                        <input type="text"
-                               name="topics"
-                               id="topics"
-                               form="update"
-                               value="{{ $lesson->topics }}"
-                               class="mt-2 w-full rounded-md border-0 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </label>
+                        <label class="block">
+                            <span class="text-lg font-medium text-gray-700">Number of Topics</span>
+                            <div class="mt-2 relative">
+                                <input type="text"
+                                       name="topics"
+                                       id="topics"
+                                       form="update"
+                                       value="{{ $lesson->topics }}"
+                                       class="w-full rounded-md border-0 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
 
