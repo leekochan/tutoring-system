@@ -10,6 +10,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <!-- Additional CSS for fixed positioning -->
     <style>
@@ -61,7 +63,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen">
         <div class="fixed-navigation">
             @include('layouts.navigation')
         </div>
@@ -69,14 +71,14 @@
         <!-- Page Heading -->
         @isset($header)
             <div class="fixed-header bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl max-h-64 mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </div>
         @endisset
 
         <!-- Page Content -->
-        <main class="content-wrapper relative">
+        <main class="content-wrapper">
             {{ $slot }}
         </main>
     </div>

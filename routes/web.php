@@ -23,6 +23,12 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth', 'role:tutor'])->name('dashboard');
 
+Route::get('/schedule', function () {
+    $tutor = auth()->user();
+    return view('schedule', [
+        'schedules' => Schedule::where('tutor_id', $tutor->username)->latest()->get()
+    ]);
+})->middleware(['auth', 'role:tutor'])->name('schedule');
 
 
 // Student Dashboard
@@ -56,7 +62,6 @@ Route::get('student/schedule' , function () {
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'show'])->name('booking.show');
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'store'])->name('booking.store');
 
-Route::view('/schedule', 'schedule')->name('schedule');
 Route::view('/student-schedule', 'student-schedule')->name('student-schedule');
 
 Route::view('/lesson/create', 'create-lesson');

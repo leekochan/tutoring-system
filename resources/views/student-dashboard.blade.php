@@ -10,7 +10,7 @@
                     <p class="text-gray-600">Here's an overview of your tutoring activities.</p>
                 </header>
 
-                <div class="bg-white shadow-lg rounded-lg p-10">
+                <div class="bg-white shadow-md rounded-lg p-10">
                     <h1 class="font-bold text-2xl mb-2 ml-4">Your upcoming tutoring session.</h1>
                     @if($schedules->isEmpty())
                         <h1 class="text-xl text-gray-600 ml-4 mt-4">No scheduled sessions yet..</h1>
@@ -46,7 +46,7 @@
                 </div>
 
                 {{-- Recommended Tutors Section --}}
-                <div class="bg-white shadow-lg rounded-lg p-10">
+                <div class="bg-white shadow-md rounded-lg p-10">
                     <h2 class="font-bold text-2xl mb-2 ml-4">New topics available!!</h2>
                     <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($lessons as $lesson)
@@ -72,14 +72,14 @@
                     </div>
                 </div>
                     {{-- Other Features Section --}}
-                <div class="bg-white shadow-lg rounded-lg p-6">
-                    <h2 class="font-bold text-lg mb-4">Other Features</h2>
-                    <ul class="list-disc list-inside space-y-2">
-                        <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>
-                        <li><a href="#" class="text-blue-600 hover:underline">Track Your Progress</a></li>
-                        <li><a href="#" class="text-blue-600 hover:underline">Support Center</a></li>
-                    </ul>
-                </div>
+{{--                <div class="bg-white shadow-lg rounded-lg p-6">--}}
+{{--                    <h2 class="font-bold text-lg mb-4">Other Features</h2>--}}
+{{--                    <ul class="list-disc list-inside space-y-2">--}}
+{{--                        <li><a href="#" class="text-blue-600 hover:underline">Academic Resources</a></li>--}}
+{{--                        <li><a href="#" class="text-blue-600 hover:underline">Track Your Progress</a></li>--}}
+{{--                        <li><a href="#" class="text-blue-600 hover:underline">Support Center</a></li>--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>

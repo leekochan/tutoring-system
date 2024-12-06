@@ -15,12 +15,23 @@
                                 <p class="text-base text-gray-600 flex-grow mt-2">
                                     Tutor: <span class="font-semibold text-black">{{ $schedule->tutor->name }}</span>
                                 </p>
-                                <div class="flex flex-row justify-center">
+                                <p class="text-base text-gray-600 flex-grow mt-2">
+                                    Date: <span class="font-semibold text-black">{{ $schedule->booking_date }}</span>
+                                </p>
+                                <div class="mb-2 mt-2">
                                     <p class="text-base text-gray-600 flex-grow mt-2">
-                                        Date: <span class="font-semibold text-black">{{ $schedule->booking_date }}</span>
+                                        Morning Session: <span class="font-semibold text-black">{{ $schedule->morning_session_hours }}</span>
                                     </p>
                                     <p class="text-base text-gray-600 flex-grow mt-2">
-                                        Time: <span class="font-semibold text-black">{{ $schedule->booking_time }}</span>
+                                        Time: <span class="font-semibold text-black">{{ $schedule->morning_session_time ?? 'No session' }}</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-base text-gray-600 flex-grow mt-2">
+                                        Afternoon Session: <span class="font-semibold text-black">{{ $schedule->afternoon_session_hours }} hour/s</span>
+                                    </p>
+                                    <p class="text-base text-gray-600 flex-grow mt-2">
+                                        Time: <span class="font-semibold text-black">{{ $schedule->afternoon_session_time ?? 'No session' }}</span>
                                     </p>
                                 </div>
                                 <div class="flex flex-row items-center mt-2">

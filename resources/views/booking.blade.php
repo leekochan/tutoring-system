@@ -56,7 +56,7 @@
                                value="multiple_sessions"
                                class="mr-2"
                                onchange="toggleBookingMethod('multiple_sessions')">
-                        Multiple Sessions
+                        Finish in Multiple Sessions/Days
                     </label>
                 </div>
             </div>
@@ -101,9 +101,14 @@
             </div>
 
             {{-- Multiple Sessions Container --}}
-            <div id="multiple-sessions-container" class="hidden space-y-4 mb-6">
+            <div id="multiple-sessions-container" class="hidden space-y-4 mb-2">
                 <div id="sessions-list">
                     <!-- First session will be added here dynamically -->
+                </div>
+
+
+                <div id="total-remaining-duration" class="mt-4 bg-blue-100 p-3 rounded-md">
+                    <p>Remaining Lesson Duration: <span id="total_remaining_hours">{{ $lesson->duration }}</span> hours</p>
                 </div>
 
                 <button type="button"
@@ -112,14 +117,10 @@
                         onclick="addNewSession()">
                     Add Another Session
                 </button>
-
-                <div id="total-remaining-duration" class="mt-4 bg-blue-100 p-3 rounded-md">
-                    <p>Remaining Lesson Duration: <span id="total_remaining_hours">{{ $lesson->duration }}</span> hours</p>
-                </div>
             </div>
 
             {{-- Booking Buttons --}}
-            <div class="mt-6 flex flex-row">
+            <div class="flex flex-row justify-between">
                 <button type="submit" class="bg-green-500 mr-2 text-white py-2 px-4 rounded-md hover:bg-green-600">
                     Confirm Booking
                 </button>
@@ -165,21 +166,21 @@
 
     // Function to find valid time slot combinations
     function findValidTimeCombinations(totalDuration) {
-    const validCombinations = [];
+        const validCombinations = [];
 
     // Iterate through morning and afternoon time slots
-    morningTimeSlots.forEach(morningSlot => {
-    afternoonTimeSlots.forEach(afternoonSlot => {
-    if (morningSlot.value + afternoonSlot.value === totalDuration) {
-    validCombinations.push({
-    morning: morningSlot,
-    afternoon: afternoonSlot
-    });
-    }
-    });
-    });
+        morningTimeSlots.forEach(morningSlot => {
+            afternoonTimeSlots.forEach(afternoonSlot => {
+                if (morningSlot.value + afternoonSlot.value === totalDuration) {
+                    validCombinations.push({
+                    morning: morningSlot,
+                    afternoon: afternoonSlot
+                    });
+                }
+            });
+        });
 
-    return validCombinations;
+        return validCombinations;
     }
 
     // Initialize page
@@ -366,51 +367,122 @@
         }
     }
 
+    function populateMultipleSessionTimeSlots(morningSelect, afternoonSelect, remainingHours) {
+        // Clear existing options
+        morningSelect.innerHTML = '<option value="">Select Time Slot</option>';
+        afternoonSelect.innerHTML = '<option value="">Select Time Slot</option>';
+
+        // Populate morning time slots with special filtering
+        morningTimeSlots.forEach(morningSlot => {
+            const option = document.createElement('option');
+            option.value = morningSlot.value;
+            option.textContent = morningSlot.label;
+
+            // Modify the filtering logic
+            if (remainingHours <= 4) {
+                // If remaining hours are 4 or less, only allow slots less than or equal to remaining hours
+                option.disabled = morningSlot.value > remainingHours;
+            } else {
+                // For remaining hours > 4, allow morning slots less than remaining hours
+                option.disabled = morningSlot.value >= remainingHours;
+            }
+
+            morningSelect.appendChild(option);
+        });
+
+        // Add event listener for morning slot selection in multiple sessions
+        morningSelect.addEventListener('change', function() {
+            const selectedMorningValue = parseFloat(this.value || 0);
+
+            // Clear afternoon slots
+            afternoonSelect.innerHTML = '<option value="">Select Time Slot</option>';
+
+            // Populate afternoon time slots
+            afternoonTimeSlots.forEach(afternoonSlot => {
+                const option = document.createElement('option');
+                option.value = afternoonSlot.value;
+                option.textContent = afternoonSlot.label;
+
+                // Modify the filtering logic for afternoon slots
+                if (remainingHours <= 4) {
+                    // If total selected time would exceed remaining hours, disable
+                    option.disabled = (selectedMorningValue + afternoonSlot.value > remainingHours);
+                } else {
+                    // Disable afternoon slots that would make total duration equal to or exceed remaining hours
+                    option.disabled = (selectedMorningValue + afternoonSlot.value >= remainingHours);
+                }
+
+                afternoonSelect.appendChild(option);
+            });
+
+            // Update remaining hours
+            updateMultiSessionRemainingHours();
+        });
+
+        // Add event listener for afternoon slot
+        afternoonSelect.addEventListener('change', function() {
+            updateMultiSessionRemainingHours();
+        });
+    }
+
     // The rest of the script remains the same as in the previous implementation
 
     function toggleBookingMethod(method) {
-    const oneDaySessionContainer = document.getElementById('one-day-session-container');
-    const multipleSessionsContainer = document.getElementById('multiple-sessions-container');
+        const oneDaySessionContainer = document.getElementById('one-day-session-container');
+        const multipleSessionsContainer = document.getElementById('multiple-sessions-container');
 
-    if (method === 'one_day') {
-    oneDaySessionContainer.classList.remove('hidden');
-    multipleSessionsContainer.classList.add('hidden');
+        if (method === 'one_day') {
+            oneDaySessionContainer.classList.remove('hidden');
+            multipleSessionsContainer.classList.add('hidden');
 
-    // Reset multiple sessions
-    document.getElementById('sessions-list').innerHTML = '';
-    sessionCounter = 0;
+            // Reset multiple sessions
+            document.getElementById('sessions-list').innerHTML = '';
+            sessionCounter = 0;
 
-    // Reset total remaining hours
-    document.getElementById('total_remaining_hours').textContent = totalLessonDuration;
-    } else if (method === 'multiple_sessions') {
-    oneDaySessionContainer.classList.add('hidden');
-    multipleSessionsContainer.classList.remove('hidden');
+            // Reset total remaining hours
+            document.getElementById('total_remaining_hours').textContent = totalLessonDuration;
+        } else if (method === 'multiple_sessions') {
+            oneDaySessionContainer.classList.add('hidden');
+            multipleSessionsContainer.classList.remove('hidden');
 
-    // Add first session automatically
-    addNewSession();
+            // Add first session automatically
+            addNewSession();
 
-    // Reset one-day session dropdowns
-    document.getElementById('morning_session').selectedIndex = 0;
-    document.getElementById('afternoon_session').selectedIndex = 0;
-    document.getElementById('one-day-remaining-duration').classList.add('hidden');
-    }
+            // Reset one-day session dropdowns
+            document.getElementById('morning_session').selectedIndex = 0;
+            document.getElementById('afternoon_session').selectedIndex = 0;
+            document.getElementById('one-day-remaining-duration').classList.add('hidden');
+        }
     }
 
     function updateMultiSessionRemainingHours() {
-    let totalHoursUsed = 0;
-    const sessionsContainer = document.getElementById('sessions-list');
-    const sessions = sessionsContainer.querySelectorAll('.session-entry');
+        let totalHoursUsed = 0;
+        const sessionsContainer = document.getElementById('sessions-list');
+        const sessions = sessionsContainer.querySelectorAll('.session-entry');
+        const addSessionBtn = document.getElementById('add-session-btn');
 
-    sessions.forEach(session => {
-    const morningSessions = session.querySelector('[name="morning_sessions[]"]');
-    const afternoonSessions = session.querySelector('[name="afternoon_sessions[]"]');
+        sessions.forEach(session => {
+            const morningSessions = session.querySelector('[name="morning_sessions[]"]');
+            const afternoonSessions = session.querySelector('[name="afternoon_sessions[]"]');
 
-    totalHoursUsed += morningSessions ? parseFloat(morningSessions.value || 0) : 0;
-    totalHoursUsed += afternoonSessions ? parseFloat(afternoonSessions.value || 0) : 0;
-    });
+            totalHoursUsed += morningSessions ? parseFloat(morningSessions.value || 0) : 0;
+            totalHoursUsed += afternoonSessions ? parseFloat(afternoonSessions.value || 0) : 0;
+        });
 
-    const remainingHours = Math.max(0, totalLessonDuration - totalHoursUsed);
-    document.getElementById('total_remaining_hours').textContent = remainingHours.toFixed(1);
+        const remainingHours = Math.max(0, totalLessonDuration - totalHoursUsed);
+        const remainingHoursDisplay = document.getElementById('total_remaining_hours');
+        remainingHoursDisplay.textContent = remainingHours.toFixed(1);
+
+        // Disable/enable Add Another Session button based on remaining hours
+        if (remainingHours === 0) {
+            addSessionBtn.disabled = true;
+            addSessionBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            addSessionBtn.disabled = false;
+            addSessionBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        return remainingHours;
     }
 
     function updateRemainingHours(type) {
@@ -431,13 +503,18 @@
     }
 
     function addNewSession() {
-    sessionCounter++;
-    const sessionsList = document.getElementById('sessions-list');
+        // Check if there are remaining hours
+        const remainingHours = updateMultiSessionRemainingHours();
 
-    const morningOptions = generateTimeSlotOptions('morning', lessonDuration);
-    const afternoonOptions = generateTimeSlotOptions('afternoon', lessonDuration);
+        // Prevent adding new session if no remaining hours
+        if (remainingHours === 0) {
+            return;
+        }
 
-    const sessionHtml = `
+        sessionCounter++;
+        const sessionsList = document.getElementById('sessions-list');
+
+        const sessionHtml = `
     <div class="session-entry border-2 border-gray-200 p-4 mb-4 rounded-md" id="session-${sessionCounter}">
         <div class="flex flex-col mb-4">
             <label for="session_date_${sessionCounter}" class="mb-2 font-semibold">Session ${sessionCounter} Date</label>
@@ -455,9 +532,9 @@
                 <select
                     id="morning_session_${sessionCounter}"
                     name="morning_sessions[]"
-                    class="w-full p-2 border rounded-md"
+                    class="w-full p-2 border rounded-md morning-session-select"
                     onchange="updateMultiSessionRemainingHours()">
-                    ${morningOptions}
+                    <option value="">Select Time Slot</option>
                 </select>
             </div>
             <div class="flex flex-col">
@@ -465,9 +542,9 @@
                 <select
                     id="afternoon_session_${sessionCounter}"
                     name="afternoon_sessions[]"
-                    class="w-full p-2 border rounded-md"
+                    class="w-full p-2 border rounded-md afternoon-session-select"
                     onchange="updateMultiSessionRemainingHours()">
-                    ${afternoonOptions}
+                    <option value="">Select Time Slot</option>
                 </select>
             </div>
         </div>
@@ -482,8 +559,14 @@
     </div>
     `;
 
-    sessionsList.insertAdjacentHTML('beforeend', sessionHtml);
-    updateMultiSessionRemainingHours();
+        sessionsList.insertAdjacentHTML('beforeend', sessionHtml);
+
+        // Populate time slots for the new session
+        const morningSelect = document.getElementById(`morning_session_${sessionCounter}`);
+        const afternoonSelect = document.getElementById(`afternoon_session_${sessionCounter}`);
+        populateMultipleSessionTimeSlots(morningSelect, afternoonSelect, remainingHours);
+
+        updateMultiSessionRemainingHours();
     }
 
     function generateTimeSlotOptions(sessionType, sessionDuration) {
@@ -503,9 +586,11 @@
     }
 
     function removeSession(sessionCounter) {
-    const sessionToRemove = document.getElementById(`session-${sessionCounter}`);
-    sessionToRemove.remove();
-    updateMultiSessionRemainingHours();
+        const sessionToRemove = document.getElementById(`session-${sessionCounter}`);
+        sessionToRemove.remove();
+
+        // Re-enable Add Another Session button if there are remaining hours
+        updateMultiSessionRemainingHours();
     }
 
     function validateSessionDate(sessionCounter) {

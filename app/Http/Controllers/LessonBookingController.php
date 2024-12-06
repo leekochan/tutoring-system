@@ -11,37 +11,87 @@ class LessonBookingController extends Controller
 {
     public function store(Request $request, Lesson $lesson)
     {
-        $validated = $request->validate([
-            'session_duration' => 'required|in:1.0,1.5,2.0,2.5,3.0',
-            'booking_dates' => 'required|array|min:1',
-            'booking_times' => 'required|array',
-        ]);
+        $bookingMethod = $request->input('booking_method');
 
-        $booking = [];
-        foreach ($validated['booking_dates'] as $index => $date) {
-            $sessionNumber = $index + 1;
+        // Validate booking date
+//        if ($request->input('one_day_date') === null) {
+//            return redirect()->back()->withErrors(['one_day_date' => 'Booking date is required.']);
+//        }
+//
+//        // Check for existing booking
+//        $existingBooking = Schedule::where('lesson_id', $lesson->id)
+//            ->where('student_id', auth()->user()->username)
+//            ->first();
+//
+//        if ($existingBooking) {
+//            return redirect()->back()->withErrors(['lesson_id' => 'You have already booked this lesson. Please update the existing booking.']);
+//        }
 
-            // Check if the combination of lesson_id and session_number already exists
-            $existingSchedule = DB::table('schedules')
-                ->where('lesson_id', $lesson->id)
-                ->where('session_number', $sessionNumber)
-                ->first();
+        if ($bookingMethod === 'one_day') {
+            $morningSessionHours = (float)$request->input('morning_session', 0);
+            $afternoonSessionHours = (float)$request->input('afternoon_session', 0);
 
-            if ($existingSchedule) {
-                return redirect()->back()->withErrors(['error' => 'A session with this number already exists for this lesson.']);
-            }
-
-            $booking[] = Schedule::create([
+            $booking = Schedule::create([
                 'lesson_id' => $lesson->id,
                 'tutor_id' => $lesson->tutor->username,
                 'student_id' => auth()->user()->username,
-                'booking_date' => $date,
-                'booking_time' => $validated['booking_times'][$sessionNumber],
-                'session_duration' => $validated['session_duration'],
-                'session_number' => $sessionNumber,
+                'booking_date' => $request->input('one_day_date'),
+                'morning_session_hours' => $morningSessionHours,
+                'morning_session_time' => $this->getTimeSlotLabel($morningSessionHours, 'morning'),
+                'afternoon_session_hours' => $afternoonSessionHours,
+                'afternoon_session_time' => $this->getTimeSlotLabel($afternoonSessionHours, 'afternoon'),
+                'total_session_duration' => $morningSessionHours + $afternoonSessionHours,
+                'session_number' => 1,
+                'booking_method' => 'one_day',
+                'status' => 'pending'
             ]);
+        } else {
+            $bookings = [];
+            $sessionDates = $request->input('session_dates', []);
+            $morningSessions = $request->input('morning_sessions', []);
+            $afternoonSessions = $request->input('afternoon_sessions', []);
+
+            foreach ($sessionDates as $index => $date) {
+                $morningSessionHours = (float)($morningSessions[$index] ?? 0);
+                $afternoonSessionHours = (float)($afternoonSessions[$index] ?? 0);
+
+                $bookings[] = Schedule::create([
+                    'lesson_id' => $lesson->id,
+                    'tutor_id' => $lesson->tutor->username,
+                    'student_id' => auth()->user()->username,
+                    'booking_date' => $date,
+                    'morning_session_hours' => $morningSessionHours,
+                    'morning_session_time' => $this->getTimeSlotLabel($morningSessionHours, 'morning'),
+                    'afternoon_session_hours' => $afternoonSessionHours,
+                    'afternoon_session_time' => $this->getTimeSlotLabel($afternoonSessionHours, 'afternoon'),
+                    'total_session_duration' => $morningSessionHours + $afternoonSessionHours,
+                    'session_number' => $index + 1,
+                    'booking_method' => 'multiple_sessions',
+                    'status' => 'pending'
+                ]);
+            }
         }
 
         return redirect()->route('student/schedule')->with('success', 'Lesson booked successfully');
+    }
+
+// Helper method to get time slot label
+    private function getTimeSlotLabel($hours, $sessionType)
+    {
+        $timeSlots = $sessionType === 'morning' ?
+            [
+                1 => '8:00am - 9:00am',
+                2 => '8:00am - 10:00am',
+                3 => '8:00am - 11:00am',
+                4 => '8:00am - 12:00pm'
+            ] :
+            [
+                1 => '1:00pm - 2:00pm',
+                2 => '1:00pm - 3:00pm',
+                3 => '1:00pm - 4:00pm',
+                4 => '1:00pm - 5:00pm'
+            ];
+
+        return $timeSlots[$hours] ?? null;
     }
 }

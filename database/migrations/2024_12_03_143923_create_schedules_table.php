@@ -19,11 +19,20 @@ return new class extends Migration
             $table->foreign('tutor_id')->references('username')->on('users')->onDelete('cascade');
             $table->string('student_id');
             $table->foreign('student_id')->references('username')->on('users')->onDelete('cascade');
+
             $table->date('booking_date');
-            $table->time('booking_time');
-            $table->float('session_duration', 3, 1);
+
+            // Add specific columns for morning and afternoon sessions
+            $table->float('morning_session_hours', 3, 1)->nullable();
+            $table->string('morning_session_time')->nullable();
+            $table->float('afternoon_session_hours', 3, 1)->nullable();
+            $table->string('afternoon_session_time')->nullable();
+
+            $table->float('total_session_duration', 3, 1);
             $table->integer('session_number');
+            $table->enum('booking_method', ['one_day', 'multiple_sessions']);
             $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending');
+
             $table->timestamps();
 
             $table->unique(['lesson_id', 'session_number']);
