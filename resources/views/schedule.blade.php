@@ -11,6 +11,9 @@
     <div class="py-12 sm:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 bg-gray-50 py-4 rounded-lg">
             <h2 class="text-2xl font-bold text-gray-900">Upcoming Sessions</h2>
+            @if($schedules->isEmpty())
+                <h1 class="text-gray-600 ml-4 mt-4">No scheduled sessions yet..</h1>
+            @else
             <div class="mt-4 grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($schedules->sortBy(['booking_date', 'booking_time']) as $schedule)
                     <div class="block p-2 h-full">
@@ -38,6 +41,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
         </div>
 
 {{--        <div class="py-12 sm:py-16">--}}

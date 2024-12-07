@@ -11,9 +11,9 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!$request->user() || !in_array($request->user()->role, $roles)) {
-            return abort(403);
+            return redirect()->back();
+        }else {
+            return $next($request);
         }
-
-        return $next($request);
     }
 }

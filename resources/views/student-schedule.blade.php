@@ -5,6 +5,9 @@
             <!-- Upcoming Sessions Section -->
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Upcoming Sessions</h2>
+                @if($schedules->isEmpty())
+                    <h1 class="text-gray-600 ml-4 mt-4">No scheduled sessions yet..</h1>
+                @else
                 <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($schedules->sortBy(['booking_date', 'booking_time']) as $schedule)
                         <div class="block p-4 h-full">
@@ -46,23 +49,24 @@
                         </div>
                     @endforeach
                 </div>
+                @endif
             </div>
 
             <!-- Pending Sessions Section -->
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pending Sessions</h2>
-                <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Pending sessions will be added later -->
-                    <p class="text-gray-500">No pending sessions at the moment.</p>
-                </div>
-            </div>
+{{--            <div class="mb-8">--}}
+{{--                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pending Sessions</h2>--}}
+{{--                <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">--}}
+{{--                    <!-- Pending sessions will be added later -->--}}
+{{--                    <p class="text-gray-500">No pending sessions at the moment.</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <!-- Completed Sessions Section -->
             <div class="mb-8">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Completed Sessions</h2>
                 <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Completed sessions will be added later -->
-                    <p class="text-gray-500">No completed sessions yet.</p>
+                    <p class="text-gray-600 ml-4">No completed sessions yet.</p>
                 </div>
             </div>
         </div>

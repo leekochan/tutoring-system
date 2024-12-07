@@ -1,6 +1,6 @@
 <x-layouts.student-app>
     <div class="bg-gray-100 rounded-lg shadow-xl w-1/2 max-w-1/2 mx-auto mt-10 p-10 h-auto relative">
-        <form action="{{ route('booking.store', $lesson->id) }}" method="POST" class="flex flex-col justify-between">
+        <form action="{{ route('booking.store', $lesson->id) }}" onsubmit="return validateMultipleSessionBooking(event)" method="POST" class="flex flex-col justify-between">
             @csrf
 
             {{-- Lesson Details Section --}}
@@ -548,14 +548,6 @@
                 </select>
             </div>
         </div>
-
-        ${sessionCounter > 1 ? `
-        <button type="button"
-                class="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-                onclick="removeSession(${sessionCounter})">
-            Remove Session
-        </button>
-        ` : ''}
     </div>
     `;
 
@@ -620,5 +612,48 @@
             currentSession.value = '';
         }
     }
+
+    function validateMultipleSessionBooking(event) {
+        // NEW: Get remaining hours from the display element
+        const remainingHoursElement = document.getElementById('total_remaining_hours');
+        const remainingHours = parseFloat(remainingHoursElement.textContent);
+
+        // NEW: Prevent booking if any hours remain unbooked
+        if (remainingHours > 0) {
+            event.preventDefault(); // Stop form submission
+            alert(`You still have ${remainingHours.toFixed(1)} hours remaining. Please complete booking all lesson hours before confirming.`);
+            return false;
+        }
+
+        // NEW: Additional comprehensive validation for sessions
+        const sessionDates = document.querySelectorAll('input[name="session_dates[]"]');
+        const morningSessionSelects = document.querySelectorAll('select[name="morning_sessions[]"]');
+        const afternoonSessionSelects = document.querySelectorAll('select[name="afternoon_sessions[]"]');
+
+        // ADDED: Validate that all sessions have a date
+        for (let i = 0; i < sessionDates.length; i++) {
+            // Ensure each session has a date selected
+            if (!sessionDates[i].value) {
+                event.preventDefault();
+                alert('Please select a date for all sessions.');
+                return false;
+            }
+
+            // ADDED: Ensure each session has at least one time slot
+            const morningValue = morningSessionSelects[i].value;
+            const afternoonValue = afternoonSessionSelects[i].value;
+
+            if (!morningValue && !afternoonValue) {
+                event.preventDefault();
+                alert(`Please select at least one time slot for Session ${i + 1}.`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // NEW: Attach validation to form submission
+    document.querySelector('form').addEventListener('submit', validateMultipleSessionBooking);
     </script>
 </x-layouts.student-app>
