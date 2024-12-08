@@ -614,32 +614,58 @@
     }
 
     function validateMultipleSessionBooking(event) {
-        // NEW: Get remaining hours from the display element
+        // Determine the current booking method
+        const oneDayMethod = document.querySelector('input[name="booking_method"][value="one_day"]').checked;
+        const multipleSessionsMethod = document.querySelector('input[name="booking_method"][value="multiple_sessions"]').checked;
+
+        // For one-day booking, validate time slots
+        if (oneDayMethod) {
+            const morningSession = document.getElementById('morning_session').value;
+            const afternoonSession = document.getElementById('afternoon_session').value;
+
+            // Ensure at least one time slot is selected
+            if (!morningSession && !afternoonSession) {
+                event.preventDefault();
+                alert('Please select at least one time slot for the session.');
+                return false;
+            }
+
+            // Verify total booked hours match lesson duration
+            const morningValue = parseFloat(morningSession || 0);
+            const afternoonValue = parseFloat(afternoonSession || 0);
+
+            if (morningValue + afternoonValue !== lessonDuration) {
+                event.preventDefault();
+                alert(`Please book all ${lessonDuration} hours for the lesson.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // For multiple sessions method, keep existing validation
         const remainingHoursElement = document.getElementById('total_remaining_hours');
         const remainingHours = parseFloat(remainingHoursElement.textContent);
 
-        // NEW: Prevent booking if any hours remain unbooked
+        // Prevent booking if any hours remain unbooked
         if (remainingHours > 0) {
-            event.preventDefault(); // Stop form submission
+            event.preventDefault();
             alert(`You still have ${remainingHours.toFixed(1)} hours remaining. Please complete booking all lesson hours before confirming.`);
             return false;
         }
 
-        // NEW: Additional comprehensive validation for sessions
+        // Additional validation for multiple sessions
         const sessionDates = document.querySelectorAll('input[name="session_dates[]"]');
         const morningSessionSelects = document.querySelectorAll('select[name="morning_sessions[]"]');
         const afternoonSessionSelects = document.querySelectorAll('select[name="afternoon_sessions[]"]');
 
-        // ADDED: Validate that all sessions have a date
         for (let i = 0; i < sessionDates.length; i++) {
-            // Ensure each session has a date selected
             if (!sessionDates[i].value) {
                 event.preventDefault();
                 alert('Please select a date for all sessions.');
                 return false;
             }
 
-            // ADDED: Ensure each session has at least one time slot
             const morningValue = morningSessionSelects[i].value;
             const afternoonValue = afternoonSessionSelects[i].value;
 

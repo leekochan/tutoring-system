@@ -3,6 +3,7 @@
 use App\Http\Controllers\LessonBookingController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SessionCancellationController;
 use App\Models\Lesson;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +59,10 @@ Route::get('student/schedule' , function () {
         'schedules' => Schedule::where('student_id', $student->username)->latest()->get()
     ]);
 })->middleware(['auth', 'student'])->name('student/schedule');
+
+Route::delete('/session/{scheduleId}/cancel', [SessionCancellationController::class, 'cancel'])
+    ->middleware(['auth', 'student'])
+    ->name('session.cancel');
 
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'show'])->name('booking.show');
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'store'])->name('booking.store');
