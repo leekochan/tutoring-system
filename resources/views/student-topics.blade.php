@@ -60,20 +60,20 @@
                                         <h1 class="text-4xl font-bold">{{ $lesson->title }}</h1>
                                     </div>
                                     <div class="flex items-center rounded mb-6">
-                                        <p class="text-xl text-gray-600">Tutor: <span class="font-bold">{{ $lesson->tutor->name }}</span></p>
+                                        <p class="text-xl font-bold text-gray-600">Tutor: <span class="font-normal">{{ $lesson->tutor->name }}</span></p>
                                     </div>
                                     <div class="flex items-center rounded mb-6">
-                                        <p class="text-xl text-gray-600">Description: <span class="font-bold">{{ $lesson->description }}</span></p>
+                                        <p class="text-xl font-bold text-gray-600">Description: <span class="font-normal">{{ $lesson->description }}</span></p>
                                     </div>
                                     <div class="flex flex-row mb-6">
                                         <div class="flex items-center rounded w-auto mr-8">
-                                            <p class="text-xl text-gray-600">Price: ₱<span class="font-bold">{{ $lesson->price }}</span></p>
+                                            <p class="text-xl font-bold text-gray-600">Price: <span class="font-normal">₱{{ $lesson->price }}</span></p>
                                         </div>
                                         <div class="flex items-center rounded w-auto mr-8">
-                                            <p class="text-xl text-gray-600">Duration: <span class="font-bold">{{ $lesson->duration }} hour/s</span></p>
+                                            <p class="text-xl font-bold text-gray-600">Duration: <span class="font-normal">{{ $lesson->duration }} hour/s</span></p>
                                         </div>
                                         <div class="flex items-center rounded w-auto mr-8">
-                                            <p class="text-xl text-gray-600">No.topic: <span class="font-bold">{{ $lesson->topics }}</span></p>
+                                            <p class="text-xl font-bold text-gray-600">No.topic: <span class="font-normal">{{ $lesson->topics }}</span></p>
                                         </div>
                                     </div>
                                 </div>

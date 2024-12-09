@@ -37,39 +37,43 @@
                                 </div>
                             @endforeach
                         </div>
+                        <div class="mt-6 text-right">
+                            <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
+                                <a href="/student/schedule">My Schedule >></a>
+                            </button>
+                        </div>
                     @endif
-                    <div class="mt-6 text-right">
-                        <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
-                            <a href="/student/schedule">My Schedule >></a>
-                        </button>
-                    </div>
                 </div>
 
                 {{-- Recommended Tutors Section --}}
                 <div class="bg-white shadow-md rounded-lg p-10">
                     <h2 class="font-bold text-2xl mb-2 ml-4">New topics available!!</h2>
-                    <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @foreach($lessons as $lesson)
-                            <div class="block p-4 h-full">
-                                <div class="flex flex-col bg-blue-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
-                                    <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
-                                        {{ $lesson->title }}
-                                    </h1>
-                                    <p class="text-base text-gray-600 flex-grow mt-2">
-                                        Tutor: <span class="font-semibold text-black">{{ $lesson->tutor->name }}</span>
-                                    </p>
-                                    <p class="text-base text-gray-600 flex-grow mt-2">
-                                        Price: <span class="font-semibold text-black">₱{{ $lesson->price }}</span>
-                                    </p>
+                    @if($lessons->isEmpty())
+                        <h1 class="text-xl text-gray-600 ml-4 mt-4">No scheduled sessions yet..</h1>
+                    @else
+                        <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($lessons as $lesson)
+                                <div class="block p-4 h-full">
+                                    <div class="flex flex-col bg-blue-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                        <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
+                                            {{ $lesson->title }}
+                                        </h1>
+                                        <p class="text-base text-gray-600 flex-grow mt-2">
+                                            Tutor: <span class="font-semibold text-black">{{ $lesson->tutor->name }}</span>
+                                        </p>
+                                        <p class="text-base text-gray-600 flex-grow mt-2">
+                                            Price: <span class="font-semibold text-black">₱{{ $lesson->price }}</span>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="mt-6 text-right">
-                        <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
-                            <a href="/topics">Find more >></a>
-                        </button>
-                    </div>
+                            @endforeach
+                        </div>
+                        <div class="mt-6 text-right">
+                            <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
+                                <a href="/topics">Find more >></a>
+                            </button>
+                        </div>
+                    @endif
                 </div>
                     {{-- Other Features Section --}}
 {{--                <div class="bg-white shadow-lg rounded-lg p-6">--}}

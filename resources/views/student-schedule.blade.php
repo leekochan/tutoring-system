@@ -40,7 +40,7 @@
                                         Date: <span
                                             class="font-semibold text-black">{{ $schedule->booking_date }}</span>
                                     </p>
-                                    <div class="mb-2 mt-2">
+                                    <div class="mb-2 mt-2 border-t border-solid border-gray-300">
                                         <p class="text-base text-gray-600 flex-grow mt-2">
                                             Morning Session: <span
                                                 class="font-semibold text-black">{{ $schedule->morning_session_hours }}</span>
@@ -50,7 +50,7 @@
                                                 class="font-semibold text-black">{{ $schedule->morning_session_time ?? 'No session' }}</span>
                                         </p>
                                     </div>
-                                    <div>
+                                    <div class="border-y border-solid border-gray-300 pb-2">
                                         <p class="text-base text-gray-600 flex-grow mt-2">
                                             Afternoon Session: <span class="font-semibold text-black">{{ $schedule->afternoon_session_hours }} hour/s</span>
                                         </p>
@@ -76,6 +76,20 @@
                     </div>
                 @endif
             </div>
+
+            {{--Completed session--}}
+{{--            <div class="py-12 sm:py-16">--}}
+{{--                <div class="mx-auto max-w-7xl px-6 lg:px-8 bg-gray-50 py-4 rounded-lg">--}}
+{{--                    <!-- Completed Sessions Section -->--}}
+{{--                    <div class="mb-8">--}}
+{{--                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Completed Sessions</h2>--}}
+{{--                        <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">--}}
+{{--                            <!-- Completed sessions will be added later -->--}}
+{{--                            <p class="text-gray-500">No completed sessions yet.</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <!-- Cancelled Sessions Section -->
             <div class="mb-8">
@@ -104,6 +118,11 @@
                             </div>
                         @endforeach
                     </div>
+                    <div class="mt-6 text-right">
+                        <button class="py-2 px-4 mr-4 bg-green-600 uppercase hover:bg-green-700 text-white rounded-md w-1/4">
+                            <a href="/cancelled-session">View all >> >></a>
+                        </button>
+                    </div>
                 @endif
             </div>
         </div>
@@ -111,14 +130,14 @@
         <!-- Cancel Confirmation Modal -->
         <div id="cancelModal"
              class="fixed inset-0 z-50 hidden items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-            <div class="relative w-auto max-w-sm mx-auto">
-                <div class="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
-                    <div class="relative p-2 flex-auto">
-                        <p class="my-2 text-blueGray-500 text-lg leading-relaxed">
+            <div class="relative w-full max-w-md mx-auto">
+                <div class="relative flex flex-col w-full bg-gray-200 border-0 rounded-lg shadow-xl outline-none focus:outline-none">
+                    <div class="relative p-4 flex-auto">
+                        <p class="my-2 text-black text-lg leading-relaxed">
                             Do you want to cancel this session?
                         </p>
                     </div>
-                    <div class="flex items-center justify-end p-2 border-t border-solid rounded-b border-blueGray-200">
+                    <div class="flex items-center justify-end px-4 py-3 border-t border-solid rounded-b border-gray-300">
                         <button
                             onclick="closeCancelModal()"
                             class="mr-4 text-sm font-bold text-gray-600 uppercase outline-none background-transparent focus:outline-none ease-linear transition-all duration-150">

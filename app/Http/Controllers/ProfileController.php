@@ -17,9 +17,17 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $role = Auth::user()->role;
+
+        if ($role === 'student') {
+            return view('profile.student-edit', [
+                'user' => $request->user(),
+            ]);
+        } elseif ($role === 'tutor') {
+            return view('profile.edit', [
+                'user' => $request->user(),
+            ]);
+        }
     }
 
     /**

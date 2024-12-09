@@ -27,4 +27,9 @@ class Schedule extends Model
     {
         return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
     }
+
+    public function completedSession()
+    {
+        return $this->hasOne(CompletedSession::class);
+    }
 }

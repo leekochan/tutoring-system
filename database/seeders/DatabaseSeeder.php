@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
 
         Lesson::create([
             'lesson_tutor' => '28196',
-            'title' => 'Programming in the Modern World',
-            'description' => 'This is the example description for Software Engineering',
+            'title' => 'Mathematics in the Modern World',
+            'description' => 'Mathematics in the Modern World explores the practical applications of mathematical concepts in everyday life. It delves into topics like statistics, probability, geometry, and financial mathematics, demonstrating how these concepts shape our understanding of the world and inform decision-making.',
             'price' => '1000',
             'duration' => '6',
             'topics' => '4'
@@ -53,7 +53,9 @@ class DatabaseSeeder extends Seeder
         Lesson::create([
             'lesson_tutor' => '28197',
             'title' => 'Software Engineering',
-            'description' => 'This is the example description for Software Engineering',
+            'description' => 'Software Engineering is the systematic approach to designing, developing, testing, and maintaining software applications. It involves
+
+ 1  a blend of technical skills and problem-solving abilities to create efficient and reliable software solutions that meet specific needs.',
             'price' => '2000',
             'duration' => '8',
             'topics' => '3'

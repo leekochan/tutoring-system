@@ -4,6 +4,7 @@ use App\Http\Controllers\LessonBookingController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionCancellationController;
+use App\Http\Controllers\SessionCompletionController;
 use App\Models\Lesson;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Route;
@@ -24,12 +25,17 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth', 'role:tutor', 'tutor'])->name('dashboard');
 
-Route::get('/schedule', function () {
-    $tutor = auth()->user();
-    return view('schedule', [
-        'schedules' => Schedule::where('tutor_id', $tutor->username)->latest()->get()
-    ]);
-})->middleware(['auth', 'role:tutor', 'tutor'])->name('schedule');
+Route::get('/schedule', [SessionCompletionController::class, 'index'])
+    ->middleware(['auth', 'role:tutor', 'tutor'])
+    ->name('schedule');
+
+Route::post('/mark-session-done/{scheduleId}', [SessionCompletionController::class, 'markSessionAsDone'])
+    ->name('mark.session.done');
+
+Route::get('/completed-sessions', [SessionCompletionController::class, 'getCompletedSessions'])
+    ->name('completed.sessions');
+
+
 
 
 // Student Dashboard
