@@ -195,36 +195,13 @@
     function findValidTimeCombinations(totalDuration) {
         const validCombinations = [];
 
-        // If duration is less than or equal to 4, allow single session or split
-        if (totalDuration <= 4) {
-            // Single morning session combinations
-            morningTimeSlots.forEach(morningSlot => {
-                if (morningSlot.value <= totalDuration) {
-                    validCombinations.push({
-                        morning: morningSlot,
-                        afternoon: null
-                    });
-                }
-            });
-
-            // Single afternoon session combinations
-            afternoonTimeSlots.forEach(afternoonSlot => {
-                if (afternoonSlot.value <= totalDuration) {
-                    validCombinations.push({
-                        morning: null,
-                        afternoon: afternoonSlot
-                    });
-                }
-            });
-
-            // Split session combinations
+        // For 3 and 4-hour durations, we need more specific handling
+        if (totalDuration === 3 || totalDuration === 4) {
+            // Check for combinations that exactly match the lesson duration
             morningTimeSlots.forEach(morningSlot => {
                 afternoonTimeSlots.forEach(afternoonSlot => {
-                    // Ensure combined value doesn't exceed lesson duration
-                    // and individual slots don't exceed lesson duration
-                    if (morningSlot.value + afternoonSlot.value === totalDuration &&
-                        morningSlot.value <= totalDuration &&
-                        afternoonSlot.value <= totalDuration) {
+                    // Ensure the combination exactly matches the total duration
+                    if (morningSlot.value + afternoonSlot.value === totalDuration) {
                         validCombinations.push({
                             morning: morningSlot,
                             afternoon: afternoonSlot
@@ -232,8 +209,31 @@
                     }
                 });
             });
+
+            // If no split session works, allow single session options
+            if (validCombinations.length === 0) {
+                // Check morning slots
+                morningTimeSlots.forEach(morningSlot => {
+                    if (morningSlot.value === totalDuration) {
+                        validCombinations.push({
+                            morning: morningSlot,
+                            afternoon: null
+                        });
+                    }
+                });
+
+                // Check afternoon slots
+                afternoonTimeSlots.forEach(afternoonSlot => {
+                    if (afternoonSlot.value === totalDuration) {
+                        validCombinations.push({
+                            morning: null,
+                            afternoon: afternoonSlot
+                        });
+                    }
+                });
+            }
         } else {
-            // Existing logic for duration > 4
+            // Existing logic for other durations
             morningTimeSlots.forEach(morningSlot => {
                 afternoonTimeSlots.forEach(afternoonSlot => {
                     if (morningSlot.value + afternoonSlot.value === totalDuration) {
@@ -257,15 +257,15 @@
         morningSelect.innerHTML = '<option value="">Select Time Slot</option>';
         afternoonSelect.innerHTML = '<option value="">Select Time Slot</option>';
 
-        // For durations <= 4, special handling
-        if (lessonDuration <= 4) {
+        // For 3 or 4 hour lessons, special handling
+        if (lessonDuration === 3 || lessonDuration === 4) {
             // Populate ALL morning time slots
             morningTimeSlots.forEach(slot => {
                 const option = document.createElement('option');
                 option.value = slot.value;
                 option.textContent = slot.label;
 
-                // Disable slots with value > lesson duration
+                // Disable options that exceed lesson duration
                 option.disabled = slot.value > lessonDuration;
 
                 morningSelect.appendChild(option);
@@ -277,7 +277,7 @@
                 option.value = slot.value;
                 option.textContent = slot.label;
 
-                // Disable slots with value > lesson duration
+                // Disable options that exceed lesson duration
                 option.disabled = slot.value > lessonDuration;
 
                 afternoonSelect.appendChild(option);
@@ -285,15 +285,19 @@
 
             // Event listener for morning slot selection
             morningSelect.addEventListener('change', function() {
-                const selectedMorningValue = parseFloat(this.value);
+                const selectedMorningValue = parseFloat(this.value || 0);
 
-                // If a morning slot is selected, disable conflicting afternoon slots
-                afternoonSelect.querySelectorAll('option').forEach(option => {
-                    const afternoonValue = parseFloat(option.value);
-                    // Disable options that would exceed total lesson duration
-                    option.disabled = (selectedMorningValue &&
-                        (selectedMorningValue + afternoonValue > lessonDuration ||
-                            afternoonValue > lessonDuration));
+                // Clear and update afternoon slots
+                afternoonSelect.innerHTML = '<option value="">Select Time Slot</option>';
+                afternoonTimeSlots.forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot.value;
+                    option.textContent = slot.label;
+
+                    // Disable options that would make total duration incorrect
+                    option.disabled = (selectedMorningValue + slot.value !== lessonDuration);
+
+                    afternoonSelect.appendChild(option);
                 });
 
                 updateRemainingHours('one_day');
@@ -301,16 +305,14 @@
 
             // Event listener for afternoon slot selection
             afternoonSelect.addEventListener('change', function() {
-                const selectedAfternoonValue = parseFloat(this.value);
+                const selectedAfternoonValue = parseFloat(this.value || 0);
 
-                // If an afternoon slot is selected, disable conflicting morning slots
+                // Clear and update morning slots
                 morningSelect.querySelectorAll('option').forEach(option => {
                     const morningValue = parseFloat(option.value);
 
-                    // Disable options that would exceed total lesson duration
-                    option.disabled = (selectedAfternoonValue &&
-                        (morningValue + selectedAfternoonValue > lessonDuration ||
-                            morningValue > lessonDuration));
+                    // Disable options that would make total duration incorrect
+                    option.disabled = (morningValue + selectedAfternoonValue !== lessonDuration);
                 });
 
                 updateRemainingHours('one_day');
