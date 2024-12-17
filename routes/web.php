@@ -8,6 +8,7 @@ use App\Http\Controllers\SessionCompletionController;
 use App\Models\Lesson;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('land');
@@ -37,7 +38,6 @@ Route::get('/completed-sessions', [SessionCompletionController::class, 'getCompl
 
 
 
-
 // Student Dashboard
 Route::get('student/dashboard', function () {
     $student = auth()->user();
@@ -46,6 +46,15 @@ Route::get('student/dashboard', function () {
     return view('student-dashboard', ['lessons' => $lessons,
         'schedules' => Schedule::where('student_id', $student->username)->take(3)->latest()->get()]);
 })->middleware(['auth', 'student'])->name('student/dashboard');
+
+Route::get('/topics/search', function (Request $request) {
+    $searchTerm = $request->input('search');
+    $lessons = Lesson::where('title', 'LIKE', '%' . $searchTerm . '%')
+        ->latest()
+        ->get();
+
+    return view('student-topics', ['lessons' => $lessons]);
+})->middleware(['auth', 'student'])->name('topics.search');
 
 Route::get('/topics', function () {
     $lessons = Lesson::latest()->get();
@@ -69,6 +78,8 @@ Route::get('student/schedule' , function () {
 Route::delete('/session/{scheduleId}/cancel', [SessionCancellationController::class, 'cancel'])
     ->middleware(['auth', 'student'])
     ->name('session.cancel');
+
+Route::post('/session/{id}/mark-done', [SessionCompletionController::class, 'markAsDone'])->name('session.mark-done');
 
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'show'])->name('booking.show');
 Route::post('/booking/{lesson}', [LessonBookingController::class, 'store'])->name('booking.store');

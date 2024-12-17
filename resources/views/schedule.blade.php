@@ -9,7 +9,18 @@
     </x-slot>
 
     <div class="py-12 sm:py-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8 bg-gray-50 py-4 rounded-lg">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-4 rounded-lg">
+            @if(session('error'))
+                <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <h2 class="text-2xl font-bold text-gray-900">Upcoming Sessions</h2>
             @if($schedules->isEmpty())
                 <h1 class="text-gray-600 ml-4 mt-4">No scheduled sessions yet..</h1>
@@ -19,7 +30,7 @@
                     <div class="block p-2 h-full">
                         <form action="{{ route('mark.session.done', $schedule->id) }}" method="POST">
                             @csrf
-                            <div class="flex flex-col bg-blue-50 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-4 h-full">
+                            <div class="flex flex-col bg-blue-50 rounded-lg shadow-2xl cursor-pointer group-hover:shadow-xl transition-shadow p-4 h-full">
                                 <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $schedule->lesson->title }}" style="font-size: larger">
                                     {{ $schedule->lesson->title }}
                                 </h1>
@@ -69,7 +80,7 @@
 
         {{--Completed session--}}
         <div class="py-12 sm:py-16">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8 bg-gray-50 py-4 rounded-lg">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 py-4 rounded-lg">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Completed Sessions</h2>
                 @if($completedSessions->isEmpty())
                     <p class="text-gray-500 ml-4">No completed sessions yet.</p>
@@ -112,6 +123,22 @@
                 }
                 return confirm('Are you sure you want to mark this session as completed?');
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+
+                flashMessages.forEach(function(message) {
+                    setTimeout(function() {
+                        message.style.transition = 'opacity 0.5s ease';
+                        message.style.opacity = '0';
+
+                        // Remove the element from the DOM after fade out
+                        setTimeout(function() {
+                            message.remove();
+                        }, 500);
+                    }, 3000);
+                });
+            });
         </script>
     @endpush
 

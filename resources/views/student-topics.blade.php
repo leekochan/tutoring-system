@@ -6,15 +6,22 @@
             <div class="w-full max-w-7xl p-6 space-y-8">
                 <div class="flex items-center mb-12 w-full">
                     <h1 class="text-2xl font-bold mr-6">Topics available</h1>
-                    @include('components.student.search')
+                    <form id="searchForm" class="flex-grow ml-auto">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search lessons..."
+                            class="w-1/2 px-3 py-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                    </form>
                 </div>
 
                 {{-- Tutors Grid --}}
                 <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($lessons as $lesson)
-                        <div class="block p-4 h-full">
-                            <div class="flex flex-col bg-gray-100 rounded-lg shadow-lg cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
-                                <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
+                        <div data-lesson-card class="block p-4 h-full">
+                            <div class="flex flex-col bg-white rounded-lg shadow-xl cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                <h1 data-lesson-title class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
                                     {{ $lesson->title }}
                                 </h1>
                                 <p class="text-base text-gray-600 flex-grow mt-2">
@@ -109,5 +116,24 @@
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto'; // Restore background scrolling
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const lessonCards = document.querySelectorAll('[data-lesson-card]');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+
+                lessonCards.forEach(card => {
+                    const title = card.querySelector('[data-lesson-title]').textContent.toLowerCase();
+
+                    if (searchTerm === '' || title.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
     </script>
 </x-layouts.student-app>

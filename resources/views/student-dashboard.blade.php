@@ -18,19 +18,38 @@
                         <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             @foreach($schedules->sortBy(['booking_date', 'booking_time']) as $schedule)
                                 <div class="block p-4 h-full">
-                                    <div class="flex flex-col bg-orange-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
-                                        <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $schedule->lesson->title }}" style="font-size: larger">
+                                    <div
+                                        class="flex flex-col bg-orange-100 rounded-lg shadow-xl cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                        <!-- Session details remain the same -->
+                                        <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate"
+                                            title="{{ $schedule->lesson->title }}" style="font-size: larger">
                                             {{ $schedule->lesson->title }}
                                         </h1>
                                         <p class="text-base text-gray-600 flex-grow mt-2">
-                                            Tutor: <span class="font-semibold text-black">{{ $schedule->tutor->name }}</span>
+                                            Tutor: <span
+                                                class="font-semibold text-black">{{ $schedule->tutor->name }}</span>
                                         </p>
-                                        <div class="flex flex-row justify-center">
+                                        <p class="text-base text-gray-600 flex-grow mt-2">
+                                            Date: <span
+                                                class="font-semibold text-black">{{ $schedule->booking_date }}</span>
+                                        </p>
+                                        <div class="mb-2 mt-2 border-t border-solid border-gray-300">
                                             <p class="text-base text-gray-600 flex-grow mt-2">
-                                                Date: <span class="font-semibold text-black">{{ $schedule->booking_date }}</span>
+                                                Morning Session: <span
+                                                    class="font-semibold text-black">{{ $schedule->morning_session_hours }}</span>
                                             </p>
                                             <p class="text-base text-gray-600 flex-grow mt-2">
-                                                Time: <span class="font-semibold text-black">{{ $schedule->booking_time }}</span>
+                                                Time: <span
+                                                    class="font-semibold text-black">{{ $schedule->morning_session_time ?? 'No session' }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="border-t border-solid border-gray-300 pb-2">
+                                            <p class="text-base text-gray-600 flex-grow mt-2">
+                                                Afternoon Session: <span class="font-semibold text-black">{{ $schedule->afternoon_session_hours }} hour/s</span>
+                                            </p>
+                                            <p class="text-base text-gray-600 flex-grow mt-2">
+                                                Time: <span
+                                                    class="font-semibold text-black">{{ $schedule->afternoon_session_time ?? 'No session' }}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -54,7 +73,7 @@
                         <div class="grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             @foreach($lessons as $lesson)
                                 <div class="block p-4 h-full">
-                                    <div class="flex flex-col bg-blue-100 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
+                                    <div class="flex flex-col bg-blue-100 rounded-lg shadow-xl cursor-pointer group-hover:shadow-xl transition-shadow p-6 h-full">
                                         <h1 class="text-2xl font-bold text-gray-900 mb-2 truncate" title="{{ $lesson->title }}" style="font-size: larger">
                                             {{ $lesson->title }}
                                         </h1>

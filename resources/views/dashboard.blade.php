@@ -24,7 +24,7 @@
                                 duration: '{{ $lesson->duration }}',
                                 topics_count: '{{ $lesson->topics_count }}'
                             })"
-                                 class="flex flex-col bg-gray-50 rounded-lg shadow-md cursor-pointer group-hover:shadow-xl transition-shadow py-4 px-6 h-full">
+                                 class="flex flex-col bg-gray-100 rounded-lg shadow-xl cursor-pointer group-hover:shadow-xl transition-shadow py-4 px-6 h-full">
                                 <h3 class="text-2xl font-bold text-gray-900 truncate" title="{{ $lesson->title }}" style="font-size: larger">
                                     {{ $lesson->title }}
                                 </h3>
@@ -39,7 +39,7 @@
                                 <p class="text-base text-gray-600 flex-grow">
                                     Topic/s: <span class="font-semibold text-black">{{ $lesson->topics }}</span>
                                 </p>
-                                <a href="/lesson/{{ $lesson->id }}/edit" class="inline-flex items-center justify-center px-4 py-2 mt-4 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer" style="width: 60px">
+                                <a href="/lesson/{{ $lesson->id }}/edit" class="w-1/2 inline-flex items-center justify-center px-4 py-2 mt-4 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer">
                                     Edit
                                 </a>
                             </div>
