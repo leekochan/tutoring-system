@@ -24,7 +24,7 @@
                                 duration: '{{ $lesson->duration }}',
                                 topics_count: '{{ $lesson->topics_count }}'
                             })"
-                                 class="flex flex-col bg-gray-100 rounded-lg shadow-xl cursor-pointer group-hover:shadow-xl transition-shadow py-4 px-6 h-full">
+                                 class="flex flex-col bg-white rounded-lg shadow-lg cursor-pointer group-hover:shadow-xl transition-shadow py-4 px-6 h-full">
                                 <h3 class="text-2xl font-bold text-gray-900 truncate" title="{{ $lesson->title }}" style="font-size: larger">
                                     {{ $lesson->title }}
                                 </h3>

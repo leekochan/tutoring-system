@@ -6,11 +6,12 @@
             <div class="w-full max-w-7xl p-6 space-y-8">
                 <div class="flex items-center mb-12 w-full">
                     <h1 class="text-2xl font-bold mr-6">Topics available</h1>
-                    <form id="searchForm" class="flex-grow ml-auto">
+                    <form id="searchForm" action="{{ route('topics.ai-search') }}" method="GET" class="flex-grow ml-auto">
                         <input
                             type="text"
+                            name="search"
                             id="searchInput"
-                            placeholder="Search lessons..."
+                            placeholder="AI-powered lesson search..."
                             class="w-1/2 px-3 py-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                     </form>
@@ -117,23 +118,23 @@
             document.body.style.overflow = 'auto'; // Restore background scrolling
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const lessonCards = document.querySelectorAll('[data-lesson-card]');
-
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-
-                lessonCards.forEach(card => {
-                    const title = card.querySelector('[data-lesson-title]').textContent.toLowerCase();
-
-                    if (searchTerm === '' || title.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const searchInput = document.getElementById('searchInput');
+        //     const lessonCards = document.querySelectorAll('[data-lesson-card]');
+        //
+        //     searchInput.addEventListener('input', function() {
+        //         const searchTerm = this.value.toLowerCase().trim();
+        //
+        //         lessonCards.forEach(card => {
+        //             const title = card.querySelector('[data-lesson-title]').textContent.toLowerCase();
+        //
+        //             if (searchTerm === '' || title.includes(searchTerm)) {
+        //                 card.style.display = 'block';
+        //             } else {
+        //                 card.style.display = 'none';
+        //             }
+        //         });
+        //     });
+        // });
     </script>
 </x-layouts.student-app>

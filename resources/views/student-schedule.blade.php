@@ -62,17 +62,17 @@
                                                 class="font-semibold text-black">{{ $schedule->afternoon_session_time ?? 'No session' }}</span>
                                         </p>
                                     </div>
-                                    <div class="flex flex-row items-center mt-2">
+                                    <div class="flex flex-row items-center justify-center mt-2">
                                         <button
                                             onclick="openCancelModal({{ $schedule->id }})"
-                                            class="inline-flex items-center justify-center px-4 py-2 mt-4 mr-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:bg-red-400 active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer">
+                                            class="inline-flex w-3/4 items-center justify-center px-4 py-2 mt-4 mr-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:bg-red-400 active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer">
                                             Cancel session
                                         </button>
-                                        <a href="#"
-                                           onclick="event.preventDefault(); document.getElementById('mark-done-form-{{ $schedule->id }}').submit();"
-                                           class="inline-flex items-center justify-center px-4 py-2 mt-4 mr-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-500 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer">
-                                            Mark as done
-                                        </a>
+{{--                                        <a href="#"--}}
+{{--                                           onclick="event.preventDefault(); document.getElementById('mark-done-form-{{ $schedule->id }}').submit();"--}}
+{{--                                           class="inline-flex items-center justify-center px-4 py-2 mt-4 mr-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-500 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:cursor-pointer">--}}
+{{--                                            Mark as done--}}
+{{--                                        </a>--}}
                                     </div>
                                 </div>
                             </div>

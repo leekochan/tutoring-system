@@ -64,38 +64,38 @@ class SessionCompletionController extends Controller
         return back()->with('success', 'Session marked as completed successfully.');
     }
 
-    public function markAsDone($scheduleId)
-    {
-        // Find the schedule
-        $schedule = Schedule::findOrFail($scheduleId);
-
-        // Check if the session belongs to the authenticated student
-        if ($schedule->student_id !== auth()->user()->username) {
-            return redirect()->back()->with('error', 'You are not authorized to mark this session as done.');
-        }
-
-        // Check if the session date is in the past or today
-//        $sessionDate = Carbon::parse($schedule->booking_date);
-//        $today = Carbon::today();
+//    public function markAsDone($scheduleId)
+//    {
+//        // Find the schedule
+//        $schedule = Schedule::findOrFail($scheduleId);
 //
-//        if ($sessionDate->greaterThan($today)) {
-//            return redirect()->back()->with('error', 'You cannot mark a future session as done.');
+//        // Check if the session belongs to the authenticated student
+//        if ($schedule->student_id !== auth()->user()->username) {
+//            return redirect()->back()->with('error', 'You are not authorized to mark this session as done.');
 //        }
-
-        // Check if the completed session exists for this schedule
-        $existingCompletedSession = CompletedSession::where('schedule_id', $scheduleId)->first();
-
-        // If the completed session doesn't exist in the completed_sessions table
-        if (!$existingCompletedSession) {
-            return redirect()->back()->with('error', 'This session is not yet done!');
-        }
-
-        if ($schedule->id == $existingCompletedSession->schedule_id) {
-            return redirect()->back()->with('error', 'This session has already been marked as completed.');
-        }
-
-        // Fetch completed sessions for the student
-
-        return redirect()->back()->with('success', 'Session marked as completed.');
-    }
+//
+//        // Check if the session date is in the past or today
+////        $sessionDate = Carbon::parse($schedule->booking_date);
+////        $today = Carbon::today();
+////
+////        if ($sessionDate->greaterThan($today)) {
+////            return redirect()->back()->with('error', 'You cannot mark a future session as done.');
+////        }
+//
+//        // Check if the completed session exists for this schedule
+//        $existingCompletedSession = CompletedSession::where('schedule_id', $scheduleId)->first();
+//
+//        // If the completed session doesn't exist in the completed_sessions table
+//        if (!$existingCompletedSession) {
+//            return redirect()->back()->with('error', 'This session is not yet done!');
+//        }
+//
+//        if ($schedule->id == $existingCompletedSession->schedule_id) {
+//            return redirect()->back()->with('error', 'This session has already been marked as completed.');
+//        }
+//
+//        // Fetch completed sessions for the student
+//
+//        return redirect()->back()->with('success', 'Session marked as completed.');
+//    }
 }

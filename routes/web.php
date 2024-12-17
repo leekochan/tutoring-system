@@ -5,10 +5,11 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionCancellationController;
 use App\Http\Controllers\SessionCompletionController;
+use App\Models\CompletedSession;
 use App\Models\Lesson;
 use App\Models\Schedule;
+use App\Services\OpenAIService;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('land');
@@ -47,14 +48,18 @@ Route::get('student/dashboard', function () {
         'schedules' => Schedule::where('student_id', $student->username)->take(3)->latest()->get()]);
 })->middleware(['auth', 'student'])->name('student/dashboard');
 
-Route::get('/topics/search', function (Request $request) {
-    $searchTerm = $request->input('search');
-    $lessons = Lesson::where('title', 'LIKE', '%' . $searchTerm . '%')
-        ->latest()
-        ->get();
+Route::get('/topics/ai-search', [LessonController::class, 'semanticSearch'])
+    ->middleware(['auth', 'student'])
+    ->name('topics.ai-search');
 
-    return view('student-topics', ['lessons' => $lessons]);
-})->middleware(['auth', 'student'])->name('topics.search');
+Route::get('/test-openai-connection', function(OpenAIService $openAIService) {
+    $connectionStatus = $openAIService->testConnection();
+
+    return response()->json([
+        'connection_successful' => $connectionStatus,
+        'ca_path' => $openAIService->getCaPath() // Add a method to retrieve CA path
+    ]);
+});
 
 Route::get('/topics', function () {
     $lessons = Lesson::latest()->get();
@@ -68,10 +73,16 @@ Route::get('lesson/{id}/book', function ($id) {
     return view('booking', ['lesson' => $lesson]);
 })->middleware(['auth', 'student'])->name('book');
 
-Route::get('student/schedule' , function () {
+Route::get('student/schedule', function () {
     $student = auth()->user();
+
+    $schedules = Schedule::where('student_id', $student->username)
+        ->whereNotIn('id', CompletedSession::pluck('schedule_id'))
+        ->latest()
+        ->get();
+
     return view('student-schedule', [
-        'schedules' => Schedule::where('student_id', $student->username)->latest()->get()
+        'schedules' => $schedules
     ]);
 })->middleware(['auth', 'student'])->name('student/schedule');
 

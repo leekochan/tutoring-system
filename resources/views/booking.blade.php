@@ -46,7 +46,7 @@
                                    name="booking_method"
                                    value="one_day"
                                    class="mr-2"
-                                   onchange="toggleBookingMethod('one_day')">
+                                   onchange="toggleBookingMethod('one_day')" required>
                             Finish in One Day
                         </label>
                     @endif
@@ -55,7 +55,7 @@
                                name="booking_method"
                                value="multiple_sessions"
                                class="mr-2"
-                               onchange="toggleBookingMethod('multiple_sessions')">
+                               onchange="toggleBookingMethod('multiple_sessions')" required>
                         Finish in Multiple Sessions/Days
                     </label>
                 </div>
@@ -165,23 +165,23 @@
     ];
 
     // Function to find valid time slot combinations
-    function findValidTimeCombinations(totalDuration) {
-        const validCombinations = [];
-
-    // Iterate through morning and afternoon time slots
-        morningTimeSlots.forEach(morningSlot => {
-            afternoonTimeSlots.forEach(afternoonSlot => {
-                if (morningSlot.value + afternoonSlot.value === totalDuration) {
-                    validCombinations.push({
-                    morning: morningSlot,
-                    afternoon: afternoonSlot
-                    });
-                }
-            });
-        });
-
-        return validCombinations;
-    }
+    // function findValidTimeCombinations(totalDuration) {
+    //     const validCombinations = [];
+    //
+    // // Iterate through morning and afternoon time slots
+    //     morningTimeSlots.forEach(morningSlot => {
+    //         afternoonTimeSlots.forEach(afternoonSlot => {
+    //             if (morningSlot.value + afternoonSlot.value === totalDuration) {
+    //                 validCombinations.push({
+    //                 morning: morningSlot,
+    //                 afternoon: afternoonSlot
+    //                 });
+    //             }
+    //         });
+    //     });
+    //
+    //     return validCombinations;
+    // }
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
@@ -595,35 +595,62 @@
 
         // Check if the date is before today
         const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+
         if (currentDate < today) {
             alert('Please select a date from today or in the future.');
             currentSession.value = '';
-            return;
+            return false;
         }
 
         // Check for duplicate dates
-        let duplicateDates = false;
-        allSessions.forEach(session => {
-            if (session.id !== currentSession.id && session.value === currentSession.value) {
-                duplicateDates = true;
-            }
-        });
+        let duplicateDates = Array.from(allSessions)
+            .filter(session =>
+                session.id !== currentSession.id &&
+                session.value === currentSession.value
+            );
 
-        if (duplicateDates) {
+        if (duplicateDates.length > 0) {
             alert('You cannot book multiple sessions on the same date.');
             currentSession.value = '';
+            return false;
         }
+
+        return true;
     }
 
     function validateMultipleSessionBooking(event) {
-        // Determine the current booking method
-        const oneDayMethod = document.querySelector('input[name="booking_method"][value="one_day"]').checked;
-        const multipleSessionsMethod = document.querySelector('input[name="booking_method"][value="multiple_sessions"]').checked;
+        // Check if lesson can only be booked in multiple sessions
+        const canOneDaySession = {{ $canOneDaySession ? 'true' : 'false' }};
+        const lessonDuration = {{ $lessonDuration }};
 
-        // For one-day booking, validate time slots
-        if (oneDayMethod) {
+        // Determine the current booking method
+        const oneDayMethod = document.querySelector('input[name="booking_method"][value="one_day"]')?.checked;
+        const multipleSessionsMethod = document.querySelector('input[name="booking_method"][value="multiple_sessions"]')?.checked;
+
+        // If one-day session is possible, use one-day specific validation
+        if (canOneDaySession && oneDayMethod) {
+            const oneDayDate = document.getElementById('one_day_date').value;
             const morningSession = document.getElementById('morning_session').value;
             const afternoonSession = document.getElementById('afternoon_session').value;
+
+            // Validate date is selected
+            if (!oneDayDate) {
+                event.preventDefault();
+                alert('Please select a date for the session.');
+                return false;
+            }
+
+            // Validate date is not in the past
+            const selectedDate = new Date(oneDayDate);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+
+            if (selectedDate < today) {
+                event.preventDefault();
+                alert('Please select a date from today or in the future.');
+                return false;
+            }
 
             // Ensure at least one time slot is selected
             if (!morningSession && !afternoonSession) {
@@ -645,7 +672,7 @@
             return true;
         }
 
-        // For multiple sessions method, keep existing validation
+        // Validation for multiple sessions (either by choice or by necessity)
         const remainingHoursElement = document.getElementById('total_remaining_hours');
         const remainingHours = parseFloat(remainingHoursElement.textContent);
 
@@ -661,13 +688,29 @@
         const morningSessionSelects = document.querySelectorAll('select[name="morning_sessions[]"]');
         const afternoonSessionSelects = document.querySelectorAll('select[name="afternoon_sessions[]"]');
 
+        // Check for duplicate dates
+        const uniqueDates = new Set();
+        let hasDuplicateDates = false;
+
         for (let i = 0; i < sessionDates.length; i++) {
-            if (!sessionDates[i].value) {
+            const currentDate = sessionDates[i].value;
+
+            // Validate date is selected
+            if (!currentDate) {
                 event.preventDefault();
                 alert('Please select a date for all sessions.');
                 return false;
             }
 
+            // Check for duplicate dates
+            if (uniqueDates.has(currentDate)) {
+                event.preventDefault();
+                alert('You cannot book multiple sessions on the same date.');
+                return false;
+            }
+            uniqueDates.add(currentDate);
+
+            // Validate time slots for each session
             const morningValue = morningSessionSelects[i].value;
             const afternoonValue = afternoonSessionSelects[i].value;
 
@@ -681,7 +724,8 @@
         return true;
     }
 
-    // NEW: Attach validation to form submission
+    // Attach validation to form submission
     document.querySelector('form').addEventListener('submit', validateMultipleSessionBooking);
+
     </script>
 </x-layouts.student-app>
